@@ -1,4 +1,4 @@
-package shortener.service;
+package shortener.controller;
 
 @FunctionalInterface
 public interface TwoParamsFunction<A, B, C> {
