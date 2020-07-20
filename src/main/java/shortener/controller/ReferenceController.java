@@ -27,11 +27,11 @@ public class ReferenceController {
     public ResponseEntity<String> createReferences(@Valid @RequestBody ReferenceForm refForm, Errors errors) {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(getErrorMessage(errors));
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getErrorMessage(errors) + " }");
         }
 
         if (refForm.getUserId() == 0) {
-            return ResponseEntity.badRequest().body("Bad request!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"UserId can not be 0!\" }");
         }
 
         String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
@@ -40,9 +40,9 @@ public class ReferenceController {
         Reference newRef = (Reference) handleErrors((service, refer) -> service.save((BaseEntity) refer), referenceService, ref);
 
         if (newRef != null) {
-            return ResponseEntity.ok("Success! Your reduced reference is " + reducedRef);
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Your reduced reference is " + reducedRef + " }");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failure!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Reference is not created!\" }");
         }
     }
 
@@ -53,18 +53,18 @@ public class ReferenceController {
                                                 @RequestParam(defaultValue = "") String reducedRef) {
         try {
             if (id != -1) {
-                return ResponseEntity.ok(referenceService.findById(id).toString());
+                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findById(id).toString() + " }");
             } if (userId == -1) {
-                return ResponseEntity.ok(referenceService.findByUserId(userId).toString());
+                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findByUserId(userId).toString() + " }");
             } else if(!reducedRef.isEmpty()) {
-                return ResponseEntity.ok(referenceService.findByReducedRef(reducedRef).getfullRef());
+                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findByReducedRef(reducedRef).getfullRef() + " }");
             } else {
-                return ResponseEntity.ok(referenceService.findAll());
+                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findAll() + " }");
             }
         } catch (Exception ex) {
             System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
         }
-        return ResponseEntity.badRequest().body("Bad request!");
+        return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
     }
 
     @ResponseBody
@@ -72,16 +72,16 @@ public class ReferenceController {
     public ResponseEntity<String> updateReferences(@Valid @RequestBody UpdateReferenceForm refForm, Errors errors) {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(getErrorMessage(errors));
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\":" + getErrorMessage(errors) + " }");
         }
 
         if (refForm.getRefId() == 0 ) {
-            return ResponseEntity.badRequest().body("Bad request!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
         }
 
         Reference ref = (Reference) handleErrors((service, id) -> service.findById((Long) id), referenceService, refForm.getRefId());
         if (ref == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reference not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
         }
 
         String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
@@ -90,9 +90,9 @@ public class ReferenceController {
         Reference savedRef = (Reference) handleErrors((service, refer) -> service.save((BaseEntity) refer), referenceService, ref);
 
         if (savedRef != null) {
-            return ResponseEntity.ok("Reference successfully updated! New reference is " + reducedRef);
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Reference successfully updated! New reference is " + reducedRef + " }");
         } else {
-            return ResponseEntity.badRequest().body("Failure to update reference.");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to update reference!\" }");
         }
     }
 
@@ -102,13 +102,13 @@ public class ReferenceController {
         boolean isError = false;
 
         if (reducedRef.isEmpty()) {
-            return ResponseEntity.badRequest().body("Required parameter reduced reference!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Required parameter reduced reference!\" }");
         }
 
         Reference ref = (Reference) handleErrors((service, redRef) -> ((IReferenceService)service).findByReducedRef((String) redRef),
                 referenceService, reducedRef);
         if (ref == null) {
-            return ResponseEntity.badRequest().body("Reference not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
         }
 
         try {
@@ -119,9 +119,9 @@ public class ReferenceController {
         }
 
         if (isError) {
-            return ResponseEntity.badRequest().body("Bad request!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
         } else {
-            return ResponseEntity.ok("Reference successfully removed!");
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Reference successfully removed!\" }");
         }
     }
 }

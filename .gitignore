@@ -1,3 +1,5 @@
 .idea
 out
 target
+node_modules
+node

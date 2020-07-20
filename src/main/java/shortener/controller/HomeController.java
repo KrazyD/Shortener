@@ -1,14 +1,12 @@
 package shortener.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import shortener.entity.BaseEntity;
 import shortener.service.BaseService;
-
-import java.util.Locale;
 
 // TODO прикрутить валидацию к @ResponseBody
 // TODO сделать возвращемое значение у репозиториев Optional<>
@@ -22,13 +20,12 @@ import java.util.Locale;
 public class HomeController {
 
     @GetMapping("/")
-    public String homeInit(Locale locale, Model model) {
-        return "home";
+    public String homeInit() {
+        return "forward:/resources/templates/index.html";
     }
 
     @RequestMapping("/favicon.ico")
     public String favicon() {
-        System.out.println("FAVICON");
         return "forward:/resources/favicon.ico";
     }
 

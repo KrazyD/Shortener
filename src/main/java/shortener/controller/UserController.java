@@ -27,7 +27,7 @@ public class UserController {
     public ResponseEntity<String> registerUsers(@Valid @RequestBody RegistrationForm form, Errors errors) {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(getErrorMessage(errors));
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getErrorMessage(errors) + " }");
         }
 
         User user = new User(form.getPassword(), form.getLogin(), form.getUsername(), form.getAdmin());
@@ -35,9 +35,9 @@ public class UserController {
         User savedUser = (User) handleErrors((service, usr) -> service.save((BaseEntity) usr), userService, user);
 
         if (savedUser == null || savedUser.getUserId() == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failure to register user!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to register user!\" }");
         } else {
-            return ResponseEntity.ok("Success! You are registered as " + savedUser.toString());
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Success! You are registered as \"" + savedUser.toString() + "}");
         }
     }
 
@@ -45,13 +45,13 @@ public class UserController {
     @GetMapping(value = "/user")
     public ResponseEntity<String> getUser(@RequestParam(defaultValue = "-1") Long id) {
         if (id == -1) {
-            return ResponseEntity.ok(userService.findAll());
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  userService.findAll() +" }");
         } else {
             User foundUser = (User) handleErrors((service, user) -> service.findById(id), userService, id);
             if (foundUser != null) {
-                return ResponseEntity.ok(foundUser.toString());
+                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  foundUser.toString() +" }");
             } else {
-                return ResponseEntity.badRequest().body("User not found!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"User not found!\" }");
             }
         }
     }
@@ -61,24 +61,24 @@ public class UserController {
     public ResponseEntity<String> modifyUser(@Valid @RequestBody User user, Errors errors) {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(getErrorMessage(errors));
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getErrorMessage(errors) + " }");
         }
 
         if (user == null) {
-            return ResponseEntity.badRequest().body("Bad request!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"User is not present!\" }");
         }
 
         User foundUser = (User) handleErrors((service, id) -> service.findById((Long) id), userService, user.getUserId());
 
         if (foundUser == null || foundUser.getUserId() == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"User not found!\" }");
         }
 
         User updatedUser = (User) handleErrors((service, passedUser) -> service.save((BaseEntity) passedUser), userService, user);
         if (updatedUser != null) {
-            return ResponseEntity.ok("User successfully updated! Updated user is " + updatedUser);
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"User successfully updated! Updated user is \"" + updatedUser + " }");
         } else {
-            return ResponseEntity.badRequest().body("Failure to update user.");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to update user!\" }");
         }
 
     }
@@ -89,12 +89,12 @@ public class UserController {
         boolean isError = false;
 
         if (id == -1) {
-            return ResponseEntity.badRequest().body("Required parameter userId!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Required parameter userId!\" }");
         }
 
         User foundUser = (User) handleErrors((service, user) -> service.findById(id), userService, id);
         if (foundUser == null || foundUser.getUserId() == 0) {
-            return ResponseEntity.badRequest().body("User not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"User not found!\" }");
         }
 
         try {
@@ -105,9 +105,9 @@ public class UserController {
         }
 
         if (isError) {
-            return ResponseEntity.badRequest().body("Bad request!");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
         } else {
-            return ResponseEntity.ok().body("User successfully removed!");
+            return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\": \"User successfully removed!\" }");
         }
     }
 }
