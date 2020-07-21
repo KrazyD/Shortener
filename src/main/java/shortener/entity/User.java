@@ -112,7 +112,7 @@ public class User implements BaseEntity, Serializable {
                 ", \"password\":\"" + password + '\"' +
                 ", \"login\":\"" + login + '\"' +
                 ", \"username\":\"" + username + '\"' +
-                ", \"isAdmin\":" + isAdmin +
+                ", \"isAdmin\":\"" + isAdmin + '\"' +
                 "}";
     }
 }

@@ -1,7 +1,12 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const client = require('./client');
-const UserList = require('./UserList');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import client from './client';
+import UserList from './UserList';
+
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+
 
 class App extends React.Component {
 
