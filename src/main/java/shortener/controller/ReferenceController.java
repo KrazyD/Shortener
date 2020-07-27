@@ -40,7 +40,7 @@ public class ReferenceController {
         Reference newRef = (Reference) handleErrors((service, refer) -> service.save((BaseEntity) refer), referenceService, ref);
 
         if (newRef != null) {
-            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Your reduced reference is " + reducedRef + " }");
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"" + reducedRef + "\" }");
         } else {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Reference is not created!\" }");
         }
@@ -90,7 +90,7 @@ public class ReferenceController {
         Reference savedRef = (Reference) handleErrors((service, refer) -> service.save((BaseEntity) refer), referenceService, ref);
 
         if (savedRef != null) {
-            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Reference successfully updated! New reference is " + reducedRef + " }");
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"" + reducedRef + "\" }");
         } else {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to update reference!\" }");
         }

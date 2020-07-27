@@ -30,10 +30,11 @@ public class HomeController {
     }
 
     public static String getErrorMessage(Errors errors) {
-        StringBuilder errorMessage = new StringBuilder("Some errors were caused: ");
+        StringBuilder errorMessage = new StringBuilder("\"Some errors were caused: ");
         for (ObjectError err : errors.getAllErrors()) {
             errorMessage.append(err.getDefaultMessage()).append(" ");
         }
+        errorMessage.append("\"");
         return errorMessage.toString();
     }
 

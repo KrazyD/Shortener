@@ -37,7 +37,7 @@ public class UserController {
         if (savedUser == null || savedUser.getUserId() == 0) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to register user!\" }");
         } else {
-            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Success! You are registered as \"" + savedUser.toString() + "}");
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + savedUser + " }");
         }
     }
 
@@ -49,7 +49,7 @@ public class UserController {
         } else {
             User foundUser = (User) handleErrors((service, user) -> service.findById(id), userService, id);
             if (foundUser != null) {
-                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  foundUser.toString() +" }");
+                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  foundUser +" }");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"User not found!\" }");
             }
@@ -76,7 +76,7 @@ public class UserController {
 
         User updatedUser = (User) handleErrors((service, passedUser) -> service.save((BaseEntity) passedUser), userService, user);
         if (updatedUser != null) {
-            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"User successfully updated! Updated user is \"" + updatedUser + " }");
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + updatedUser + " }");
         } else {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to update user!\" }");
         }
