@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {InputText} from "primereact/inputtext";
 import {Password} from "primereact/password";
 import { Button } from 'primereact/button';
-import WebService from "../webService/WebService";
+import UserWebService from "../webService/UserWebService";
 import {Redirect} from 'react-router-dom';
 
 export default class Register extends Component {
@@ -27,10 +27,10 @@ export default class Register extends Component {
     }
 
     onSubmit(event) {
-        WebService.registerUser(this.state.user).then(response => {
+        UserWebService.registerUser(this.state.user).then(response => {
             this.setState({ isSuccessRegistered: true })
-        }, err => {
-
+        }, error => {
+            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 

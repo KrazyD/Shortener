@@ -1,35 +1,36 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Login from "./initial/Login";
-import Register from "./initial/Register";
 import { BrowserRouter } from 'react-router-dom';
-import { Button } from 'primereact/button';
-import { Link, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from 'react-router-dom';
+import {Growl} from "primereact/growl";
+
+import Login from './initial/Login';
+import Register from './initial/Register';
+import Home from './initial/Home'
+import UserList from './user/UserList';
+import RefList from "./reference/RefList";
 
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import UserList from "./user/UserList";
 
 class App extends Component {
 
     constructor(props) {
         super(props);
-
-    }
-
-    componentDidMount() {
     }
 
     render() {
         return (
             <div>
-                <Link to={'/login'} ><Button label="Login" className="p-button-raised"/></Link>
-                <Link to={'/register'}><Button label="Register" className="p-button-raised"/></Link>
+                <Growl ref={(el) => this.growl = el} />
                 <Switch>
-                    <Route path='/login' component={Login} />
-                    <Route path='/register' component={Register} />
-                    <Route path='/usersList' component={UserList} />
+                    <Route path='/home' component={Home} />
+                    <Route path='/login' render={() => <Login growl={this.growl} />}/>
+                    <Route path='/register' render={() => <Register growl={this.growl} />} />
+                    <Route path='/usersList' render={() => <UserList growl={this.growl} />} />
+                    <Route path='/refsList' render={() => <RefList growl={this.growl} />} />
+                    <Redirect from='/' to='/home'/>
                 </Switch>
             </div>
             )

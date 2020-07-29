@@ -118,14 +118,4 @@ public class Reference implements BaseEntity, Serializable {
         }
     }
 
-//    @Override
-//    public String toString() {
-//        return "{" +
-//                "\"refId\":" + id +
-//                ", \"fullRef\":\"" + fullRef + '\"' +
-//                ", \"reducedRef\":\"" + reducedRef + '\"' +
-//                ", \"requestsNumb\":" + requestsNumb +
-//                ", \"userId\":" + userId +
-//                "}";
-//    }
 }

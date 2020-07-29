@@ -3,25 +3,24 @@ import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import UserWebService from '../webService/UserWebService';
 
-import UserDialog from "./UserDialog";
 import {ContextMenu} from 'primereact/contextmenu';
+import RefWebService from "../webService/RefWebService";
+import RefDialog from "./RefDialog";
 
-// TODO сделать валидацию ввода
-
-export default class UserList extends Component {
+export default class RefList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
-            selectedUser: {username: '', login: '', password: '', roles: []},
+            refs: [],
+            selectedRef: {fullRef: '', reducedRef: '', requestsNumb: 0, userId: 0},
             isDialogDisplay: false
         };
 
         this.menu = [
             {label: 'Add', icon: 'pi pi-fw pi-plus', command: () => this.addRowAdd()},
-            {label: 'Edit', icon: 'pi pi-fw pi-pencil', command: () => this.onRowEdit(this.state.selectedUser)},
-            {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => this.onRowDelete(this.state.selectedUser)}
+            {label: 'Edit', icon: 'pi pi-fw pi-pencil', command: () => this.onRowEdit(this.state.selectedRef)},
+            {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => this.onRowDelete(this.state.selectedRef)}
         ];
 
         this.addRowAdd = this.addRowAdd.bind(this);
@@ -30,8 +29,11 @@ export default class UserList extends Component {
     }
 
     componentDidMount() {
-        UserWebService.getUsers().then(response => {
-            this.setState({users: response.data});
+        RefWebService.getRefs().then(response => {
+            console.log('REFS=');
+            console.log(response);
+
+            this.setState({refs: response.data});
         }, error => {
             this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
         });
@@ -39,36 +41,36 @@ export default class UserList extends Component {
 
     addRowAdd() {
         this.setState({
-            selectedUser: {username: '', login: '', password: '', roles: []},
+            selectedRef:  {fullRef: '', reducedRef: '', requestsNumb: 0, userId: 0},
             isDialogDisplay: true
         });
     }
 
-    onRowEdit(selectedUser) {
+    onRowEdit(selectedRef) {
         this.setState({
-            selectedUser: selectedUser,
+            selectedRef: selectedRef,
             isDialogDisplay: true
         });
     }
 
-    onRowDelete(selectedUser) {
-        UserWebService.deleteUser(selectedUser).then(response => {
-            let index = this.state.users.indexOf(selectedUser);
-            this.setState({users: this.state.users.filter((val, i) => i !== index)});
+    onRowDelete(selectedRef) {
+        UserWebService.deleteUser(selectedRef).then(response => {
+            let index = this.state.refs.indexOf(selectedRef);
+            this.setState({refs: this.state.refs.filter((val, i) => i !== index)});
             this.props.growl.show({severity: 'success', summary: response.status, detail: response.data});
         }, error => {
             this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
-    handleUserFromDialog = (user, isNew) => {
+    handleRefFromDialog = (user, isNew) => {
         if (user) {
             if (isNew) {
                 UserWebService.registerUser(user).then(response => {
-                    let users = [...this.state.users];
-                    users.push(response.data);
+                    let refs = [...this.state.refs];
+                    refs.push(response.data);
                     this.setState({
-                        users: users,
+                        refs: refs,
                         isDialogDisplay: false
                     });
                     this.props.growl.show({severity: 'success', summary: 'Success', detail: 'User is registered'});
@@ -78,12 +80,12 @@ export default class UserList extends Component {
                 });
             } else {
                 UserWebService.updateUser(user).then(response => {
-                    let users = [...this.state.users];
-                    let index = users.findIndex((item) => item.id === response.data.id);
-                    users[index] = Object.assign({}, response.data);
+                    let refs = [...this.state.refs];
+                    let index = refs.findIndex((item) => item.id === response.data.id);
+                    refs[index] = Object.assign({}, response.data);
                     this.setState({
                         isDialogDisplay: false,
-                        users: users});
+                        refs: refs});
                     this.props.growl.show({severity: 'success', summary: 'Success', detail: 'User is updated'});
                 }, error => {
                     this.setState({isDialogDisplay: false});
@@ -102,24 +104,24 @@ export default class UserList extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <ContextMenu model={this.menu} ref={el => this.cm = el} />
 
-                <DataTable value={this.state.users} editMode="row"
-                           contextMenuSelection={(e) => this.state.selectedUser}
-                           onContextMenuSelectionChange={e => this.setState({selectedUser: e.value})}
+                <DataTable value={this.state.refs} editMode="row"
+                           contextMenuSelection={(e) => this.state.selectedRef}
+                           onContextMenuSelectionChange={e => this.setState({selectedRef: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
-                    <Column field="id" header="UserId" style={{height: '3.5em'}}/>
-                    <Column field="username" header="Username" style={{height: '3.5em'}}/>
-                    <Column field="login" header="Login" style={{height: '3.5em'}}/>
-                    <Column field="password" header="Password" style={{height: '3.5em'}}/>
-                    <Column body={this.renderRoles} field="roles" header="Roles" style={{height: '3.5em'}}/>
+                    <Column field="id" header="ReferenceId" style={{height: '3.5em'}}/>
+                    <Column field="fullRef" header="FullRef" style={{height: '3.5em'}}/>
+                    <Column field="reducedRef" header="ReducedRef" style={{height: '3.5em'}}/>
+                    <Column field="requestsNumb" header="RequestsNumb" style={{height: '3.5em'}}/>
+                    <Column field="userId" header="UserId" style={{height: '3.5em'}}/>
+                    {/*<Column body={this.renderRoles} field="roles" header="Roles" style={{height: '3.5em'}}/>*/}
                 </DataTable>
-                <UserDialog isDialogDisplay={this.state.isDialogDisplay}
-                            onChangeFinish={this.handleUserFromDialog}
-                            user={Object.assign({}, this.state.selectedUser)} />
+                <RefDialog isDialogDisplay={this.state.isDialogDisplay}
+                            onChangeFinish={this.handleRefFromDialog}
+                            user={Object.assign({}, this.state.selectedRef)} />
             </div>
         )
     }

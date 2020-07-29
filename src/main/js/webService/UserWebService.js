@@ -1,12 +1,12 @@
 import client from '../webService/client';
 
-export default class WebService {
+export default class UserWebService {
 
     static getUsers() {
         return client({method: 'GET', path: '/user'}).then(response => {
             return {status: response.entity.status, data: response.entity.data.sort((a, b) => a.id - b.id)};
         }, err => {
-            throw WebService.getError(err);
+            throw UserWebService.getError(err);
         });
     }
 
@@ -14,7 +14,7 @@ export default class WebService {
         return client({method: 'DELETE', path: '/user?id=' + user.id}).then(response => {
             return response.entity;
         }, err => {
-            throw WebService.getError(err);
+            throw UserWebService.getError(err);
         });
     }
 
@@ -22,7 +22,7 @@ export default class WebService {
         return client({method: 'POST', path: '/user', entity: user}).then(response => {
             return response.entity;
         }, err => {
-            throw WebService.getError(err);
+            throw UserWebService.getError(err);
         });
     }
 
@@ -30,7 +30,7 @@ export default class WebService {
         return client({method: 'PUT', path: '/user', entity: user}).then(response => {
             return response.entity;
         }, err => {
-            throw WebService.getError(err);
+            throw UserWebService.getError(err);
         });
     }
 
@@ -38,7 +38,7 @@ export default class WebService {
         return client({method: 'POST', path: '/login', entity: credentials}).then(response => {
             return response.entity;
         }, err => {
-            throw WebService.getError(err);
+            throw UserWebService.getError(err);
         });
     }
 

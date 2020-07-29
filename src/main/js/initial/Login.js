@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {InputText} from "primereact/inputtext";
 import {Password} from "primereact/password";
 import { Button } from 'primereact/button';
-import WebService from "../webService/WebService";
+import UserWebService from "../webService/UserWebService";
 import {Redirect} from 'react-router-dom';
 
 export default class Login extends Component {
@@ -28,16 +28,16 @@ export default class Login extends Component {
     }
 
     onSubmit(event) {
-        WebService.login(this.state.user).then(response => {
+        UserWebService.login(this.state.user).then(response => {
             this.setState({ isLoggedIn: true })
-        }, err => {
-
+        }, error => {
+            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
     render() {
         return ( this.state.isLoggedIn ?
-            <Redirect to={{pathname: '/usersList'}} /> :
+            <Redirect to={{pathname: '/refsList'}} /> :
             <div className='p-grid p-fluid input-fields'>
                 <div className='p-col-4'><label htmlFor='login'>Login</label></div>
                 <div className='p-col-8'>
