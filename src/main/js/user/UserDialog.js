@@ -1,35 +1,41 @@
 import React, {Component} from 'react';
 import {InputText} from 'primereact/inputtext';
-import {Button} from "primereact/button";
+import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
+import {Password} from 'primereact/password';
+import {ListBox} from 'primereact/listbox';
 
 export default class UserDialog extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            user: {'username': '', 'login': '', 'password': '', 'isAdmin': ''},
-            onChangeFinish: this.props.onChangeFinish,
-            isNewUser: true
+            user: {username: '', login: '', password: '', roles: []},
+            onChangeFinish: props.onChangeFinish,
+            isNewUser: true,
+            selectedRoles: []
         };
 
         this.onSave = this.onSave.bind(this);
         this.onShow = this.onShow.bind(this);
         this.onCancelAdding = this.onCancelAdding.bind(this);
+        this.updateProperty = this.updateProperty.bind(this);
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() { }
 
     onSave() {
-        this.props.onChangeFinish(this.state.user, this.state.isNewUser);
+        let user = this.state.user;
+        user.roles = this.state.selectedRoles;
+        this.props.onChangeFinish(user, this.state.isNewUser);
     }
 
     onShow() {
         this.setState({
-            user: this.props.user ? this.props.user : {'username': '', 'login': '', 'password': '', 'isAdmin': ''},
-            isNewUser: !this.props.user
-        })
+            user: this.props.user || {username: '', login: '', password: '', roles: []},
+            isNewUser: !this.props.user.hasOwnProperty('id'),
+            selectedRoles: this.props.user.roles || []
+        });
     }
 
     onCancelAdding() {
@@ -43,42 +49,44 @@ export default class UserDialog extends Component {
     }
 
     render() {
-        let dialogFooter = <div className="ui-dialog-buttonpane p-clearfix">
-            <Button label="Save" icon="pi pi-check" onClick={this.onSave}/>
-            <Button label="Cancel" icon="pi pi-times" onClick={this.onCancelAdding}/>
+        let dialogFooter = <div className='ui-dialog-buttonpane p-clearfix'>
+            <Button label='Save' icon='pi pi-check' onClick={this.onSave}/>
+            <Button label='Cancel' icon='pi pi-times' onClick={this.onCancelAdding}/>
         </div>;
+
+        let possibleRoles = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_READER', 'ROLE_WRITER'];
 
         return (
             <Dialog visible={this.props.isDialogDisplay}
-                    style={{width: '300px'}} header="New User"
+                    style={{width: '300px'}} header={this.state.isNewUser ? 'New user' : 'Modify user'}
                     modal={true} footer={dialogFooter}
                     blockScroll={false}
                     closable={false}
-                    onHide={() => {}}
+                    onHide={() => {this.setState({user: null})}}
                     onShow={this.onShow}>
                 {
                     this.state.user &&
 
-                    <div className="p-grid p-fluid">
-                        <div className="p-col-4" style={{padding:'.75em'}}><label htmlFor="username">Username</label></div>
-                        <div className="p-col-8" style={{padding:'.5em'}}>
-                            <InputText id="username" onChange={(e) => {this.updateProperty('username', e.target.value)}} value={this.state.user.username}/>
+                    <div className='p-grid p-fluid input-fields'>
+                        <div className='p-col-4'><label htmlFor='username'>Username</label></div>
+                        <div className='p-col-8'>
+                            <InputText id='username' onChange={(e) => this.updateProperty('username', e.target.value)} value={this.state.user.username}/>
                         </div>
 
-                        <div className="p-col-4" style={{padding:'.75em'}}><label htmlFor="login">Login</label></div>
-                        <div className="p-col-8" style={{padding:'.5em'}}>
-                            <InputText id="login" onChange={(e) => {this.updateProperty('login', e.target.value)}} value={this.state.user.login}/>
+                        <div className='p-col-4'><label htmlFor='login'>Login</label></div>
+                        <div className='p-col-8'>
+                            <InputText id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
                         </div>
 
-                        <div className="p-col-4" style={{padding:'.75em'}}><label htmlFor="password">Password</label></div>
-                        <div className="p-col-8" style={{padding:'.5em'}}>
-                            <InputText id="password" onChange={(e) => {this.updateProperty('password', e.target.value)}} value={this.state.user.password}/>
+                        <div className='p-col-4'><label htmlFor='password'>Password</label></div>
+                        <div className='p-col-8'>
+                            <Password id='password' onChange={(e) => this.updateProperty('password', e.target.value)} value={this.state.user.password} />
                         </div>
 
-                        <div className="p-col-4" style={{padding:'.75em'}}><label htmlFor="isAdmin">IsAdmin</label></div>
-                        <div className="p-col-8" style={{padding:'.5em'}}>
-                            <InputText id="isAdmin" onChange={(e) => {this.updateProperty('isAdmin', e.target.value)}} value={this.state.user.isAdmin}/>
-                        </div>
+                        <ListBox value={this.state.selectedRoles}
+                                 options={possibleRoles}
+                                 onChange={(e) => this.setState({selectedRoles: e.value})}
+                                 multiple={true} />
                     </div>
                 }
             </Dialog>

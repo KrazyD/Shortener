@@ -1,11 +1,9 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import {InputText} from 'primereact/inputtext';
 import {Growl} from 'primereact/growl';
-import client from '../client';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import { Button } from "primereact/button";
+import WebService from '../webService/WebService';
+
 import UserDialog from "./UserDialog";
 import {ContextMenu} from 'primereact/contextmenu';
 
@@ -13,31 +11,40 @@ import {ContextMenu} from 'primereact/contextmenu';
 // TODO сделать валидацию ввода
 // TODO Возвращать старое значение если после сохранения сервер ответил ошибкой
 
-export default class UserList extends React.Component {
+export default class UserList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             users: [],
             loading: false,
-            selectedUser: null,
+            selectedUser: {username: '', login: '', password: '', roles: []},
             isDialogDisplay: false
         };
 
         this.menu = [
-            {label: 'Add', icon: 'pi pi-fw pi-plus', command: () => this.addNew()},
+            {label: 'Add', icon: 'pi pi-fw pi-plus', command: () => this.addRowAdd()},
             {label: 'Edit', icon: 'pi pi-fw pi-pencil', command: () => this.onRowEdit(this.state.selectedUser)},
             {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => this.onRowDelete(this.state.selectedUser)}
         ];
 
-        this.addNew = this.addNew.bind(this);
+        this.addRowAdd = this.addRowAdd.bind(this);
         this.onRowEdit = this.onRowEdit.bind(this);
         this.onRowDelete = this.onRowDelete.bind(this);
     }
 
     componentDidMount() {
-        client({method: 'GET', path: '/user'}).done(response => {
-            this.setState({users: response.entity.data.sort((a, b) => a.userId - b.userId)});
+        WebService.getUsers().then(response => {
+            this.setState({users: response.data});
+        }, error => {
+            this.growl.show({severity: 'error', summary: error.status, detail: error.message});
+        });
+    }
+
+    addRowAdd() {
+        this.setState({
+            selectedUser: {username: '', login: '', password: '', roles: []},
+            isDialogDisplay: true
         });
     }
 
@@ -49,40 +56,42 @@ export default class UserList extends React.Component {
     }
 
     onRowDelete(selectedUser) {
-        client({method: 'DELETE', path: '/user?id=' + selectedUser.userId}).then(response => {
+        WebService.deleteUser(selectedUser).then(response => {
             let index = this.state.users.indexOf(selectedUser);
             this.setState({users: this.state.users.filter((val, i) => i !== index)});
-            this.growl.show({severity: 'success', summary: 'Success', detail: 'User is deleted'});
-        }, err => {
-            let errMessage = err.cause ? err.cause.message : err.entity.data;
-            this.growl.show({severity: 'error', summary: 'Error', detail: errMessage});
+            this.growl.show({severity: 'success', summary: response.status, detail: response.data});
+        }, error => {
+            this.growl.show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
     handleUserFromDialog = (user, isNew) => {
         if (user) {
             if (isNew) {
-                client({method: 'POST', path: '/user', entity: user}).then(response => {
+                WebService.registerUser(user).then(response => {
                     let users = [...this.state.users];
-                    users.push(response.entity.data);
+                    users.push(response.data);
                     this.setState({
                         users: users,
                         isDialogDisplay: false
                     });
                     this.growl.show({severity: 'success', summary: 'Success', detail: 'User is registered'});
-                }, err => {
+                }, error => {
                     this.setState({isDialogDisplay: false});
-                    let errMessage = err.cause ? err.cause.message : err.entity.data;
-                    this.growl.show({severity: 'error', summary: 'Error', detail: errMessage});
+                    this.growl.show({severity: 'error', summary: error.status, detail: error.message});
                 });
             } else {
-                client({method: 'PUT', path: '/user', entity: user}).then(response => {
-                    this.setState({isDialogDisplay: false});
+                WebService.updateUser(user).then(response => {
+                    let users = [...this.state.users];
+                    let index = users.findIndex((item) => item.id === response.data.id);
+                    users[index] = Object.assign({}, response.data);
+                    this.setState({
+                        isDialogDisplay: false,
+                        users: users});
                     this.growl.show({severity: 'success', summary: 'Success', detail: 'User is updated'});
-                }, err => {
+                }, error => {
                     this.setState({isDialogDisplay: false});
-                    let errMessage = err.cause ? err.cause.message : err.entity.data;
-                    this.growl.show({severity: 'error', summary: 'Error', detail: errMessage});
+                    this.growl.show({severity: 'error', summary: error.status, detail: error.message});
                 });
             }
         } else {
@@ -92,11 +101,8 @@ export default class UserList extends React.Component {
         }
     };
 
-    addNew() {
-        this.setState({
-            selectedUser: null,
-            isDialogDisplay: true
-        });
+    renderRoles(rowData, column) {
+        return rowData.roles ? rowData.roles.join(', ') : '';
     }
 
     render() {
@@ -111,11 +117,11 @@ export default class UserList extends React.Component {
                            contextMenuSelection={(e) => this.state.selectedUser}
                            onContextMenuSelectionChange={e => this.setState({selectedUser: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
-                    <Column field="userId" header="UserId" style={{height: '3.5em'}}/>
+                    <Column field="id" header="UserId" style={{height: '3.5em'}}/>
                     <Column field="username" header="Username" style={{height: '3.5em'}}/>
                     <Column field="login" header="Login" style={{height: '3.5em'}}/>
                     <Column field="password" header="Password" style={{height: '3.5em'}}/>
-                    <Column field="isAdmin" header="IsAdmin" style={{height: '3.5em'}}/>
+                    <Column body={this.renderRoles} field="roles" header="Roles" style={{height: '3.5em'}}/>
                 </DataTable>
                 <UserDialog isDialogDisplay={this.state.isDialogDisplay}
                             onChangeFinish={this.handleUserFromDialog}

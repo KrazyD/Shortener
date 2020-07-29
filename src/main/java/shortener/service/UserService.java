@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shortener.entity.BaseEntity;
 import shortener.entity.User;
-import shortener.repository.IUserRepository;
+import shortener.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,7 +15,7 @@ import java.util.List;
 public class UserService implements IUserService {
 
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public String findAll() {
@@ -37,6 +37,11 @@ public class UserService implements IUserService {
     @Transactional
     public User save(BaseEntity user) {
          return userRepository.save((User) user);
+    }
+
+    @Override
+    public User getLoggedInUser(String login, String password) {
+        return userRepository.findByLoginAndPassword(login, password).orElse(new User());
     }
 
     @Override

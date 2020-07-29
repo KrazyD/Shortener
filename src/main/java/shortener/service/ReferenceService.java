@@ -5,15 +5,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shortener.entity.BaseEntity;
 import shortener.entity.Reference;
-import shortener.repository.IReferenceRepository;
+import shortener.repository.ReferenceRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReferenceService implements IReferenceService {
 
     @Autowired
-    IReferenceRepository referenceRepository;
+    ReferenceRepository referenceRepository;
 
     @Override
     public String findAll() {
@@ -25,7 +26,7 @@ public class ReferenceService implements IReferenceService {
     }
 
     public Reference findById(Long id) {
-        return referenceRepository.findById(id).orElse(new Reference());
+        return referenceRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class ReferenceService implements IReferenceService {
 
     @Override
     public Reference findByReducedRef(String redRef) {
-        return referenceRepository.findByReducedRef(redRef);
+        return referenceRepository.findByReducedRef(redRef).orElse(new Reference());
     }
 
     @Override

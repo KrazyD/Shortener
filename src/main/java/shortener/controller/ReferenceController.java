@@ -1,5 +1,7 @@
 package shortener.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import shortener.service.IReferenceService;
 
 import javax.validation.Valid;
 
+import java.util.List;
 import java.util.Objects;
 
 import static shortener.controller.HomeController.getErrorMessage;
@@ -18,6 +21,8 @@ import static shortener.controller.HomeController.handleErrors;
 
 @Controller
 public class ReferenceController {
+
+    private static final Logger logger = LogManager.getLogger(UserController.class);
 
     @Autowired
     private IReferenceService referenceService;
@@ -53,16 +58,32 @@ public class ReferenceController {
                                                 @RequestParam(defaultValue = "") String reducedRef) {
         try {
             if (id != -1) {
-                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findById(id).toString() + " }");
+                Reference foundRef = (Reference) referenceService.findById(id);
+                if (foundRef.getId() != 0) {
+                    return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + foundRef + " }");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
+                }
             } if (userId == -1) {
-                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findByUserId(userId).toString() + " }");
+                List<Reference> foundRefs = referenceService.findByUserId(userId);
+                if (foundRefs != null) {
+                    return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + foundRefs + " }");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"References not found!\" }");
+                }
             } else if(!reducedRef.isEmpty()) {
-                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findByReducedRef(reducedRef).getfullRef() + " }");
+                Reference foundRef = referenceService.findByReducedRef(reducedRef);
+                if (foundRef.getId() != 0) {
+                    return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + foundRef.getfullRef() + " }");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
+                }
             } else {
                 return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findAll() + " }");
             }
         } catch (Exception ex) {
-            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
+            logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
+//            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
         }
         return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
     }
@@ -107,14 +128,15 @@ public class ReferenceController {
 
         Reference ref = (Reference) handleErrors((service, redRef) -> ((IReferenceService)service).findByReducedRef((String) redRef),
                 referenceService, reducedRef);
-        if (ref == null) {
+        if (ref.getId() == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
         }
 
         try {
-            referenceService.delete(ref.getRefId());
+            referenceService.delete(ref.getId());
         } catch (Exception ex) {
-            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
+            logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
+//            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
             isError = true;
         }
 

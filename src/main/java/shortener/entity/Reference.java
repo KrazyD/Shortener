@@ -1,5 +1,8 @@
 package shortener.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -23,9 +26,9 @@ public class Reference implements BaseEntity, Serializable {
 
     @Id
 //    @Min(value = 1, message = "Field 'refId' can`t be empty!")
-    @Column(name = "\"refId\"")
+    @Column(name = "\"id\"")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long refId;
+    private long id;
 
     @NotBlank(message = "Field 'fullRef' can`t be empty!")
     @Column(name = "\"fullRef\"")
@@ -47,12 +50,12 @@ public class Reference implements BaseEntity, Serializable {
     @JoinColumn(name = "\"userId\"", nullable = false, insertable = false, updatable = false)
     private User user;
 
-    public long getRefId() {
-        return refId;
+    public long getId() {
+        return id;
     }
 
-    public void setRefId(long refId) {
-        this.refId = refId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getfullRef() {
@@ -92,7 +95,7 @@ public class Reference implements BaseEntity, Serializable {
         if (this == o) return true;
         if (!(o instanceof Reference)) return false;
         Reference reference = (Reference) o;
-        return refId == reference.refId &&
+        return id == reference.id &&
                 requestsNumb == reference.requestsNumb &&
                 userId == reference.userId &&
                 fullRef.equals(reference.fullRef) &&
@@ -101,17 +104,28 @@ public class Reference implements BaseEntity, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(refId, fullRef, reducedRef, requestsNumb, userId);
+        return Objects.hash(id, fullRef, reducedRef, requestsNumb, userId);
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "\"refId\":" + refId +
-                ", \"fullRef\":\"" + fullRef + '\"' +
-                ", \"reducedRef\":\"" + reducedRef + '\"' +
-                ", \"requestsNumb\":" + requestsNumb +
-                ", \"userId\":" + userId +
-                "}";
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error parse Reference to JSON!");
+            e.printStackTrace();
+            return "{}";
+        }
     }
+
+//    @Override
+//    public String toString() {
+//        return "{" +
+//                "\"refId\":" + id +
+//                ", \"fullRef\":\"" + fullRef + '\"' +
+//                ", \"reducedRef\":\"" + reducedRef + '\"' +
+//                ", \"requestsNumb\":" + requestsNumb +
+//                ", \"userId\":" + userId +
+//                "}";
+//    }
 }

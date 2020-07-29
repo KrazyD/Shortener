@@ -1,5 +1,7 @@
 package shortener.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -18,6 +20,8 @@ import shortener.service.BaseService;
 
 @Controller
 public class HomeController {
+
+    private static final Logger logger = LogManager.getLogger(UserController.class);
 
     @GetMapping("/")
     public String homeInit() {
@@ -49,7 +53,8 @@ public class HomeController {
         }
 
         if (error != null) {
-            System.err.println("!!!Error while handle request!!!\n" + error);
+            logger.error("!!!Error while handle request!!!\n" + error);
+//            System.err.println("!!!Error while handle request!!!\n" + error);
         }
 
         return resultEntity;

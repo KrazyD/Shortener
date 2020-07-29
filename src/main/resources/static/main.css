@@ -8,6 +8,10 @@ body .button-container .action-button {
     width: 25%;
 }
 
+.input-fields > div {
+    padding: .5em
+}
 
-
-                    
+body .input-fields .admin-button {
+    margin-top: .75em;
+}
