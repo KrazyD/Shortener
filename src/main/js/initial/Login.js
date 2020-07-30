@@ -11,7 +11,8 @@ export default class Login extends Component {
         super(props);
         this.state = {
             user: {login: '', password: ''},
-            isLoggedIn: false
+            isLoggedIn: false,
+            authorizedUser: {}
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -29,7 +30,7 @@ export default class Login extends Component {
 
     onSubmit(event) {
         UserWebService.login(this.state.user).then(response => {
-            this.setState({ isLoggedIn: true })
+            this.setState({ isLoggedIn: true, authorizedUser: response.data })
         }, error => {
             this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
         });
@@ -37,7 +38,7 @@ export default class Login extends Component {
 
     render() {
         return ( this.state.isLoggedIn ?
-            <Redirect to={{pathname: '/refsList'}} /> :
+            <Redirect to={{pathname: '/refsList', state: { currentUser: this.state.authorizedUser }}} /> :
             <div className='p-grid p-fluid input-fields'>
                 <div className='p-col-4'><label htmlFor='login'>Login</label></div>
                 <div className='p-col-8'>

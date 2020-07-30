@@ -44,7 +44,7 @@ export default class UserWebService {
 
     static getError(err) {
         let error = {};
-        if (err.hasOwnProperty('entity')) {
+        if (err.hasOwnProperty('entity') && err.entity.hasOwnProperty('status')) {
             error = {status: err.entity.status, message: err.entity.data}
         } else {
             error = {status: 'Error', message: err.cause.message}

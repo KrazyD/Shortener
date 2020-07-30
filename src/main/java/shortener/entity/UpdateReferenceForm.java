@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 public class UpdateReferenceForm {
 
-    @Min(value = 1, message = "Field 'refId' can`t be empty!")
+    @Min(value = 0, message = "Field 'refId' can`t be empty!")
     private long refId;
 
     @NotBlank(message = "Field 'fullRef' can`t be empty!")

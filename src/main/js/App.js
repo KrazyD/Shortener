@@ -26,10 +26,10 @@ class App extends Component {
                 <Growl ref={(el) => this.growl = el} />
                 <Switch>
                     <Route path='/home' component={Home} />
-                    <Route path='/login' render={() => <Login growl={this.growl} />}/>
-                    <Route path='/register' render={() => <Register growl={this.growl} />} />
-                    <Route path='/usersList' render={() => <UserList growl={this.growl} />} />
-                    <Route path='/refsList' render={() => <RefList growl={this.growl} />} />
+                    <Route path='/login' render={(props) => <Login {...props} growl={this.growl} />}/>
+                    <Route path='/register' render={(props) => <Register {...props} growl={this.growl} />} />
+                    <Route path='/usersList' render={(props) => <UserList {...props} growl={this.growl} />} />
+                    <Route path='/refsList' render={(props) => <RefList {...props} growl={this.growl}  />} />
                     <Redirect from='/' to='/home'/>
                 </Switch>
             </div>

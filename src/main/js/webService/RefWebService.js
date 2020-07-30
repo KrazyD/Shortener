@@ -10,32 +10,26 @@ export default class RefWebService {
         });
     }
 
-    static deleteUser(user) {
-        return client({method: 'DELETE', path: '/user?id=' + user.id}).then(response => {
+    static deleteRef(ref) {
+        return client({method: 'DELETE', path: '/ref?reducedRef=' + ref.reducedRef}).then(response => {
             return response.entity;
         }, err => {
             throw RefWebService.getError(err);
         });
     }
 
-    static registerUser(user) {
-        return client({method: 'POST', path: '/user', entity: user}).then(response => {
+    static createRef(ref, userId) {
+        let form = {fullRef: ref.fullRef, userId: userId};
+        return client({method: 'POST', path: '/ref', entity: form}).then(response => {
             return response.entity;
         }, err => {
             throw RefWebService.getError(err);
         });
     }
 
-    static updateUser(user) {
-        return client({method: 'PUT', path: '/user', entity: user}).then(response => {
-            return response.entity;
-        }, err => {
-            throw RefWebService.getError(err);
-        });
-    }
-
-    static login(credentials) {
-        return client({method: 'POST', path: '/login', entity: credentials}).then(response => {
+    static updateRef(ref) {
+        let form = {refId: ref.id, fullRef: ref.fullRef};
+        return client({method: 'PUT', path: '/ref', entity: form}).then(response => {
             return response.entity;
         }, err => {
             throw RefWebService.getError(err);
@@ -44,7 +38,7 @@ export default class RefWebService {
 
     static getError(err) {
         let error = {};
-        if (err.hasOwnProperty('entity')) {
+        if (err.hasOwnProperty('entity') && err.entity.hasOwnProperty('status')) {
             error = {status: err.entity.status, message: err.entity.data}
         } else {
             error = {status: 'Error', message: err.cause.message}

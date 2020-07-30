@@ -8,7 +8,7 @@ public class ReferenceForm {
     @NotBlank(message = "Field 'fullRef' can`t be empty!")
     private String fullRef;
 
-    @Min(value = 1, message = "Field 'userId' can`t be empty!")
+    @Min(value = 0, message = "Field 'userId' can`t be empty!")
     private long userId;
 
     public ReferenceForm() {

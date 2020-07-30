@@ -7,6 +7,8 @@ import shortener.entity.BaseEntity;
 import shortener.entity.Reference;
 import shortener.repository.ReferenceRepository;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,11 +20,14 @@ public class ReferenceService implements IReferenceService {
 
     @Override
     public String findAll() {
-        Iterable<Reference> refs = referenceRepository.findAll();
-        StringBuilder refsList = new StringBuilder("{ ");
-        refs.forEach(refsList::append);
+        Iterator<Reference> refs = referenceRepository.findAll().iterator();
+        List<Reference> refsList = new ArrayList<>();
 
-        return refsList.append(" }").toString();
+        while(refs.hasNext()) {
+            refsList.add(refs.next());
+        }
+
+        return refsList.toString();
     }
 
     public Reference findById(Long id) {

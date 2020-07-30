@@ -2,18 +2,15 @@ import React, {Component} from 'react';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
-import {Password} from 'primereact/password';
-import {ListBox} from 'primereact/listbox';
 
 export default class RefDialog extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            user: {username: '', login: '', password: '', roles: []},
+            reference: {fullRef: '', reducedRef: '', requestsNumb: 0, userId: 0},
             onChangeFinish: props.onChangeFinish,
-            isNewUser: true,
-            selectedRoles: []
+            isNewRef: true
         };
 
         this.onSave = this.onSave.bind(this);
@@ -25,27 +22,24 @@ export default class RefDialog extends Component {
     componentDidMount() { }
 
     onSave() {
-        let user = this.state.user;
-        user.roles = this.state.selectedRoles;
-        this.props.onChangeFinish(user, this.state.isNewUser);
+        this.props.onChangeFinish(this.state.reference, this.state.isNewRef);
     }
 
     onShow() {
         this.setState({
-            user: this.props.user || {username: '', login: '', password: '', roles: []},
-            isNewUser: !this.props.user.hasOwnProperty('id'),
-            selectedRoles: this.props.user.roles || []
+            reference: this.props.reference || {fullRef: '', reducedRef: '', requestsNumb: 0, userId: 0},
+            isNewRef: !this.props.reference.hasOwnProperty('id')
         });
     }
 
     onCancelAdding() {
-        this.props.onChangeFinish(null, this.state.isNewUser);
+        this.props.onChangeFinish(null, this.state.isNewRef);
     }
 
     updateProperty(property, value) {
-        let user = this.state.user;
-        user[property] = value;
-        this.setState({user: user});
+        let ref = this.state.reference;
+        ref[property] = value;
+        this.setState({reference: ref});
     }
 
     render() {
@@ -54,39 +48,23 @@ export default class RefDialog extends Component {
             <Button label='Cancel' icon='pi pi-times' onClick={this.onCancelAdding}/>
         </div>;
 
-        let possibleRoles = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_READER', 'ROLE_WRITER'];
-
         return (
             <Dialog visible={this.props.isDialogDisplay}
-                    style={{width: '300px'}} header={this.state.isNewUser ? 'New user' : 'Modify user'}
+                    style={{width: '300px'}} header={this.state.isNewRef ? 'New reference' : 'Modify reference'}
                     modal={true} footer={dialogFooter}
                     blockScroll={false}
                     closable={false}
-                    onHide={() => {this.setState({user: null})}}
+                    onHide={() => {this.setState({reference: null})}}
                     onShow={this.onShow}>
                 {
-                    this.state.user &&
+                    this.state.reference &&
 
                     <div className='p-grid p-fluid input-fields'>
-                        <div className='p-col-4'><label htmlFor='username'>Username</label></div>
+                        <div className='p-col-4'><label htmlFor='reference'>Reference</label></div>
                         <div className='p-col-8'>
-                            <InputText id='username' onChange={(e) => this.updateProperty('username', e.target.value)} value={this.state.user.username}/>
+                            <InputText id='reference' onChange={(e) => this.updateProperty('fullRef', e.target.value)} value={this.state.reference.fullRef}/>
                         </div>
 
-                        <div className='p-col-4'><label htmlFor='login'>Login</label></div>
-                        <div className='p-col-8'>
-                            <InputText id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
-                        </div>
-
-                        <div className='p-col-4'><label htmlFor='password'>Password</label></div>
-                        <div className='p-col-8'>
-                            <Password id='password' onChange={(e) => this.updateProperty('password', e.target.value)} value={this.state.user.password} />
-                        </div>
-
-                        <ListBox value={this.state.selectedRoles}
-                                 options={possibleRoles}
-                                 onChange={(e) => this.setState({selectedRoles: e.value})}
-                                 multiple={true} />
                     </div>
                 }
             </Dialog>

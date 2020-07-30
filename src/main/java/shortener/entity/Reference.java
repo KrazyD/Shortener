@@ -25,7 +25,7 @@ public class Reference implements BaseEntity, Serializable {
     }
 
     @Id
-//    @Min(value = 1, message = "Field 'refId' can`t be empty!")
+//    @Min(value = 0, message = "Field 'refId' can`t be empty!")
     @Column(name = "\"id\"")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

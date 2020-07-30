@@ -5,6 +5,7 @@ import UserWebService from '../webService/UserWebService';
 
 import UserDialog from "./UserDialog";
 import {ContextMenu} from 'primereact/contextmenu';
+import {Button} from "primereact/button";
 
 // TODO сделать валидацию ввода
 
@@ -19,12 +20,12 @@ export default class UserList extends Component {
         };
 
         this.menu = [
-            {label: 'Add', icon: 'pi pi-fw pi-plus', command: () => this.addRowAdd()},
+            {label: 'Add', icon: 'pi pi-fw pi-plus', command: () => this.onRowAdd()},
             {label: 'Edit', icon: 'pi pi-fw pi-pencil', command: () => this.onRowEdit(this.state.selectedUser)},
             {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => this.onRowDelete(this.state.selectedUser)}
         ];
 
-        this.addRowAdd = this.addRowAdd.bind(this);
+        this.onRowAdd = this.onRowAdd.bind(this);
         this.onRowEdit = this.onRowEdit.bind(this);
         this.onRowDelete = this.onRowDelete.bind(this);
     }
@@ -37,7 +38,7 @@ export default class UserList extends Component {
         });
     }
 
-    addRowAdd() {
+    onRowAdd() {
         this.setState({
             selectedUser: {username: '', login: '', password: '', roles: []},
             isDialogDisplay: true
@@ -103,11 +104,15 @@ export default class UserList extends Component {
 
     render() {
 
+        let footer = <div className="p-clearfix" >
+            <Button label="Add" icon="pi pi-plus" onClick={this.onRowAdd}/>
+        </div>;
+
         return (
             <div>
                 <ContextMenu model={this.menu} ref={el => this.cm = el} />
 
-                <DataTable value={this.state.users} editMode="row"
+                <DataTable value={this.state.users} editMode="row" footer={footer}
                            contextMenuSelection={(e) => this.state.selectedUser}
                            onContextMenuSelectionChange={e => this.setState({selectedUser: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
