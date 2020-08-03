@@ -10,9 +10,12 @@ export default class Home extends Component {
 
     render() {
         return (
-                <div>
-                    <Link to={'/login'} ><Button label="Login" className="p-button-raised"/></Link>
-                    <Link to={'/register'}><Button label="Register" className="p-button-raised"/></Link>
+                <div className='center-container'>
+                    <h3>Log in or create an account</h3>
+                    <div>
+                        <Link to={'/login'} ><Button label="Login" className="p-button-raised"/></Link>
+                        <Link to={'/register'}><Button label="Register" className="p-button-raised"/></Link>
+                    </div>
                 </div>
         )
     }

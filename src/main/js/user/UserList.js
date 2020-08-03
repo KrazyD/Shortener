@@ -7,8 +7,6 @@ import UserDialog from "./UserDialog";
 import {ContextMenu} from 'primereact/contextmenu';
 import {Button} from "primereact/button";
 
-// TODO сделать валидацию ввода
-
 export default class UserList extends Component {
 
     constructor(props) {
@@ -112,15 +110,15 @@ export default class UserList extends Component {
             <div>
                 <ContextMenu model={this.menu} ref={el => this.cm = el} />
 
-                <DataTable value={this.state.users} editMode="row" footer={footer}
+                <DataTable value={this.state.users} editMode="row" footer={footer} header="Users list"
                            contextMenuSelection={(e) => this.state.selectedUser}
                            onContextMenuSelectionChange={e => this.setState({selectedUser: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
-                    <Column field="id" header="UserId" style={{height: '3.5em'}}/>
-                    <Column field="username" header="Username" style={{height: '3.5em'}}/>
-                    <Column field="login" header="Login" style={{height: '3.5em'}}/>
-                    <Column field="password" header="Password" style={{height: '3.5em'}}/>
-                    <Column body={this.renderRoles} field="roles" header="Roles" style={{height: '3.5em'}}/>
+                    <Column field="id" header="User Id" style={{width: '6%'}}/>
+                    <Column field="username" header="Username" style={{width: '21%'}}/>
+                    <Column field="login" header="Login" style={{width: '21%'}}/>
+                    <Column field="password" header="Password" style={{width: '21%'}}/>
+                    <Column body={this.renderRoles} field="roles" header="Roles" style={{width: '21%'}}/>
                 </DataTable>
                 <UserDialog isDialogDisplay={this.state.isDialogDisplay}
                             onChangeFinish={this.handleUserFromDialog}

@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import UserWebService from '../webService/UserWebService';
 
 import {ContextMenu} from 'primereact/contextmenu';
 import {Button} from 'primereact/button';
 import RefWebService from "../webService/RefWebService";
 import RefDialog from "./RefDialog";
+import {Link} from "react-router-dom";
+import Header from "../app/Header";
 
 export default class RefList extends Component {
 
@@ -15,8 +16,20 @@ export default class RefList extends Component {
         this.state = {
             refs: [],
             selectedRef: {fullRef: '', reducedRef: '', requestsNumb: 0, userId: 0},
-            isDialogDisplay: false
+            isDialogDisplay: false,
+            isAdmin: false
         };
+
+        this.props.location.state.from = this.props.location.pathname;
+
+        let currentUser = this.props?.location?.state?.currentUser;
+        if (currentUser) {
+            this.userId = currentUser.hasOwnProperty('id') ? currentUser.id : 0;
+            this.state.isAdmin = currentUser.hasOwnProperty('roles') &&  currentUser.roles.includes('ROLE_ADMIN');
+        } else {
+            this.userId = 0;
+            this.state.isAdmin = false;
+        }
 
         this.menu = [
             {label: 'Add', icon: 'pi pi-fw pi-plus', command: () => this.onRowAdd()},
@@ -52,7 +65,7 @@ export default class RefList extends Component {
     }
 
     onRowDelete(selectedRef) {
-        UserWebService.deleteRef(selectedRef).then(response => {
+        RefWebService.deleteRef(selectedRef).then(response => {
             let index = this.state.refs.indexOf(selectedRef);
             this.setState({refs: this.state.refs.filter((val, i) => i !== index)});
             this.props.growl.show({severity: 'success', summary: response.status, detail: response.data});
@@ -64,15 +77,8 @@ export default class RefList extends Component {
     handleRefFromDialog = (ref, isNew) => {
         if (ref) {
             if (isNew) {
-                let userId = 0;
-                try {
-                    userId = this.props.location.state.currentUser.id;
-                } catch (e) {
-                    userId = 0;
-                    this.props.growl.show({severity: 'error', summary: 'Error', detail: 'ID of current user undefined'});
-                }
-                if (userId && userId !== 0) {
-                    RefWebService.createRef(ref, userId).then(response => {
+                if (this.userId && this.userId !== 0) {
+                    RefWebService.createRef(ref, this.userId).then(response => {
                         let refs = [...this.state.refs];
                         refs.push(response.data);
                         this.setState({
@@ -86,6 +92,7 @@ export default class RefList extends Component {
                     });
                 } else {
                     this.setState({isDialogDisplay: false});
+                    this.props.growl.show({severity: 'error', summary: 'Error', detail: 'ID of current user undefined'});
                 }
             } else {
                 RefWebService.updateRef(ref).then(response => {
@@ -115,17 +122,18 @@ export default class RefList extends Component {
 
         return (
             <div>
+                {/*{this.state.isAdmin && <Link to={{pathname: '/usersList', state:{...this.props.location.state} }} ><Button label="Show all users" className="p-button-raised"/></Link>}*/}
                 <ContextMenu model={this.menu} ref={el => this.cm = el} />
 
-                <DataTable value={this.state.refs} editMode="row" footer={footer}
+                <DataTable value={this.state.refs} editMode="row" footer={footer} header="Reference list"
                            contextMenuSelection={(e) => this.state.selectedRef}
                            onContextMenuSelectionChange={e => this.setState({selectedRef: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
-                    <Column field="id" header="ReferenceId" style={{height: '3.5em', width: '8%'}}/>
-                    <Column field="fullRef" header="FullRef" style={{height: '3.5em', width: '60%'}}/>
-                    <Column field="reducedRef" header="ReducedRef" style={{height: '3.5em', width: '14%'}}/>
-                    <Column field="requestsNumb" header="RequestsNumb" style={{height: '3.5em', width: '10%'}}/>
-                    <Column field="userId" header="UserId" style={{height: '3.5em', width: '8%'}}/>
+                    <Column field="id" header="Reference Id" style={{width: '8%'}}/>
+                    <Column field="fullRef" header="Full Reference" style={{width: '60%'}}/>
+                    <Column field="reducedRef" header="Reduced Reference" style={{width: '14%'}}/>
+                    <Column field="requestsNumb" header="Requests Number" style={{width: '10%'}}/>
+                    <Column field="userId" header="User Id" style={{width: '8%'}}/>
                 </DataTable>
                 <RefDialog isDialogDisplay={this.state.isDialogDisplay}
                             onChangeFinish={this.handleRefFromDialog}

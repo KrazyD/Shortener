@@ -3,7 +3,7 @@ import {InputText} from "primereact/inputtext";
 import {Password} from "primereact/password";
 import { Button } from 'primereact/button';
 import UserWebService from "../webService/UserWebService";
-import {Redirect} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 export default class Login extends Component {
 
@@ -16,10 +16,6 @@ export default class Login extends Component {
         };
 
         this.onSubmit = this.onSubmit.bind(this);
-    }
-
-    componentDidMount() {
-
     }
 
     updateProperty(property, value) {
@@ -38,18 +34,25 @@ export default class Login extends Component {
 
     render() {
         return ( this.state.isLoggedIn ?
-            <Redirect to={{pathname: '/refsList', state: { currentUser: this.state.authorizedUser }}} /> :
-            <div className='p-grid p-fluid input-fields'>
-                <div className='p-col-4'><label htmlFor='login'>Login</label></div>
-                <div className='p-col-8'>
-                    <InputText id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
+            <Redirect to={{pathname: '/main', state: { currentUser: this.state.authorizedUser, from: this.props?.location?.pathname }}} /> :
+            <div className='p-grid p-fluid input-fields center-container'>
+                <div>
+                    <div className='p-col-4'><label htmlFor='login'>Login</label></div>
+                    <div className='p-col-8'>
+                        <InputText id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
+                    </div>
                 </div>
 
-                <div className='p-col-4'><label htmlFor='password'>Password</label></div>
-                <div className='p-col-8'>
-                    <Password id='password' onChange={(e) => this.updateProperty('password', e.target.value)} feedback={false} value={this.state.user.password} />
+                <div>
+                    <div className='p-col-4'><label htmlFor='password'>Password</label></div>
+                    <div className='p-col-8'>
+                        <Password id='password' onChange={(e) => this.updateProperty('password', e.target.value)} feedback={false} value={this.state.user.password} />
+                    </div>
                 </div>
-                <Button label="Submit" className="p-button-raised" onClick={this.onSubmit} />
+                <div className='container-space-between'>
+                    <Button label="Submit" className="p-button-raised submit-button" onClick={this.onSubmit} />
+                    <Link to={'/home'} ><Button label="Back" className="p-button-raised"/></Link>
+                </div>
             </div>
         )
     }

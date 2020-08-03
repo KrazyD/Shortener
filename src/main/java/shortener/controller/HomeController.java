@@ -2,6 +2,7 @@ package shortener.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -10,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import shortener.entity.BaseEntity;
 import shortener.service.BaseService;
 
-// TODO прикрутить валидацию к @ResponseBody
-// TODO сделать возвращемое значение у репозиториев Optional<>
 // TODO проверить все методы и их валидацию
 // TODO прикрутить security, и чтобы у админов была отдельная страничка с возможностью редактировать все
-// TODO починить favicon
 // TODO инкремент обращений к ссылке
 // TODO метод получения длинной по короткой + добавить ТЕСТ для него
 

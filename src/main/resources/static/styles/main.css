@@ -4,14 +4,10 @@
     justify-content: center;
 }
 
-body .button-container .action-button {
-    width: 25%;
-}
-
 .input-fields > div {
     padding: .5em
 }
 
-body .input-fields .admin-button {
-    margin-top: .75em;
+body .p-datatable tr {
+    height: 3.5em;
 }

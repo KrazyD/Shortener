@@ -7,8 +7,8 @@ import {Growl} from "primereact/growl";
 import Login from './initial/Login';
 import Register from './initial/Register';
 import Home from './initial/Home'
-import UserList from './user/UserList';
-import RefList from "./reference/RefList";
+import Logout from "./app/Logout";
+import Main from "./app/Main";
 
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -25,15 +25,15 @@ class App extends Component {
             <div>
                 <Growl ref={(el) => this.growl = el} />
                 <Switch>
-                    <Route path='/home' component={Home} />
-                    <Route path='/login' render={(props) => <Login {...props} growl={this.growl} />}/>
+                    <Route path='/home' render={(props) => <Home {...props} growl={this.growl} /> } />
+                    <Route path='/login' render={(props) => <Login {...props} growl={this.growl} /> }/>
+                    <Route path='/logout' render={(props) => <Logout {...props} growl={this.growl} /> }/>
                     <Route path='/register' render={(props) => <Register {...props} growl={this.growl} />} />
-                    <Route path='/usersList' render={(props) => <UserList {...props} growl={this.growl} />} />
-                    <Route path='/refsList' render={(props) => <RefList {...props} growl={this.growl}  />} />
-                    <Redirect from='/' to='/home'/>
+                    <Route path='/main' render={(props) => <Main {...props} growl={this.growl} />} />
+                    <Redirect from='/' to={{pathname: '/home', state:{...this.props?.location?.state} }} />
                 </Switch>
             </div>
-            )
+        )
     }
 }
 
