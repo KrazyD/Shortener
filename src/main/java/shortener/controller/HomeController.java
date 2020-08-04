@@ -19,7 +19,7 @@ import shortener.service.BaseService;
 @Controller
 public class HomeController {
 
-    private static final Logger logger = LogManager.getLogger(UserController.class);
+    private static final Logger logger = LogManager.getLogger(HomeController.class);
 
     @GetMapping("/")
     public String homeInit() {

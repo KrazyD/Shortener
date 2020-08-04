@@ -22,7 +22,7 @@ import static shortener.controller.HomeController.handleErrors;
 @Controller
 public class ReferenceController {
 
-    private static final Logger logger = LogManager.getLogger(UserController.class);
+    private static final Logger logger = LogManager.getLogger(ReferenceController.class);
 
     @Autowired
     private IReferenceService referenceService;

@@ -52772,55 +52772,69 @@ var App = /*#__PURE__*/function (_Component) {
   var _super = _createSuper(App);
 
   function App(props) {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _super.call(this, props);
+    _this = _super.call(this, props);
+    _this.state = {
+      growl: null
+    };
+    console.log('APP CONSTRUCTOR');
+    console.log('this.state.growl');
+    console.log(_this.state.growl);
+    return _this;
   }
 
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var _this = this,
+      var _this2 = this,
           _this$props,
           _this$props$location;
 
+      console.log('APP RENDER');
+      console.log('this.state.growl');
+      console.log(this.state.growl);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_growl__WEBPACK_IMPORTED_MODULE_3__["Growl"], {
         ref: function ref(el) {
-          return _this.growl = el;
+          return _this2.state.growl ? void 0 : _this2.setState({
+            growl: el
+          });
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/home",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_initial_Home__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({}, props, {
-            growl: _this.growl
+            growl: _this2.state.growl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/login",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_initial_Login__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, props, {
-            growl: _this.growl
-          }));
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        path: "/logout",
-        render: function render(props) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_app_Logout__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({}, props, {
-            growl: _this.growl
+            growl: _this2.state.growl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/register",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_initial_Register__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, props, {
-            growl: _this.growl
+            growl: _this2.state.growl
+          }));
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        path: "/logout",
+        render: function render(props) {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_app_Logout__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({}, props, {
+            growl: _this2.state.growl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/main",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_app_Main__WEBPACK_IMPORTED_MODULE_8__["default"], _extends({}, props, {
-            growl: _this.growl
+            growl: _this2.state.growl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
@@ -53179,9 +53193,7 @@ var Main = /*#__PURE__*/function (_Component) {
   _createClass(Main, [{
     key: "render",
     value: function render() {
-      var _this = this,
-          _this$props,
-          _this$props$location;
+      var _this$props, _this$props$location;
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_4__["default"], this.props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         path: "/main/usersList",
@@ -53201,15 +53213,13 @@ var Main = /*#__PURE__*/function (_Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         path: "/main/refsList",
         render: function render(props) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reference_RefList__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, props, {
-            growl: _this.growl
-          }));
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reference_RefList__WEBPACK_IMPORTED_MODULE_5__["default"], props);
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
         exact: true,
         from: "/main",
         to: {
-          pathname: '/main/usersList',
+          pathname: '/main/refsList',
           state: _objectSpread({}, (_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : _this$props$location.state)
         }
       })));
@@ -53369,6 +53379,8 @@ var Login = /*#__PURE__*/function (_Component) {
       isLoggedIn: false,
       authorizedUser: {}
     };
+    console.log('LOGIN CONTSRUCTOR PROPS');
+    console.log(props);
     _this.onSubmit = _this.onSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -53407,6 +53419,8 @@ var Login = /*#__PURE__*/function (_Component) {
           _this$props$location,
           _this3 = this;
 
+      console.log('LOGIN RENDER PROPS');
+      console.log(this.props);
       return this.state.isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Redirect"], {
         to: {
           pathname: '/main',
@@ -54098,6 +54112,7 @@ var RefList = /*#__PURE__*/function (_Component) {
         value: this.state.refs,
         editMode: "row",
         footer: footer,
+        header: "Reference list",
         contextMenuSelection: function contextMenuSelection(e) {
           return _this4.state.selectedRef;
         },
@@ -54633,6 +54648,7 @@ var UserList = /*#__PURE__*/function (_Component) {
         value: this.state.users,
         editMode: "row",
         footer: footer,
+        header: "Users list",
         contextMenuSelection: function contextMenuSelection(e) {
           return _this4.state.selectedUser;
         },

@@ -27,8 +27,8 @@ export default class Main extends Component {
                             }
                         }
                     } />
-                    <Route path='/main/refsList' render={(props) => <RefList {...props} growl={this.growl}  />} />
-                    <Redirect exact from='/main' to={{pathname: '/main/usersList', state:{...this.props?.location?.state} }}/>
+                    <Route path='/main/refsList' render={(props) => <RefList {...props} />} />
+                    <Redirect exact from='/main' to={{pathname: '/main/refsList', state:{...this.props?.location?.state} }}/>
                 </Switch>
             </div>
         )

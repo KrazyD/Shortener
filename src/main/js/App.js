@@ -18,18 +18,22 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            growl: null
+        };
     }
 
     render() {
         return (
             <div>
-                <Growl ref={(el) => this.growl = el} />
+                <Growl ref={(el) => this.state.growl ? void(0): this.setState({growl: el}) } />
                 <Switch>
-                    <Route path='/home' render={(props) => <Home {...props} growl={this.growl} /> } />
-                    <Route path='/login' render={(props) => <Login {...props} growl={this.growl} /> }/>
-                    <Route path='/logout' render={(props) => <Logout {...props} growl={this.growl} /> }/>
-                    <Route path='/register' render={(props) => <Register {...props} growl={this.growl} />} />
-                    <Route path='/main' render={(props) => <Main {...props} growl={this.growl} />} />
+                    <Route path='/home' render={(props) => <Home {...props} growl={this.state.growl} /> } />
+                    <Route path='/login' render={(props) => <Login {...props} growl={this.state.growl} /> }/>
+                    <Route path='/register' render={(props) => <Register {...props} growl={this.state.growl} />} />
+                    <Route path='/logout' render={(props) => <Logout {...props} growl={this.state.growl} /> }/>
+                    <Route path='/main' render={(props) => <Main {...props} growl={this.state.growl} />} />
                     <Redirect from='/' to={{pathname: '/home', state:{...this.props?.location?.state} }} />
                 </Switch>
             </div>
