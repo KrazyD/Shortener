@@ -1,9 +1,13 @@
 package shortener.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +17,9 @@ import shortener.entity.RegistrationForm;
 import shortener.entity.User;
 import shortener.service.IUserService;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 import static shortener.controller.HomeController.getErrorMessage;
 import static shortener.controller.HomeController.handleErrors;
@@ -42,7 +44,7 @@ public class UserController {
 
         User savedUser = (User) handleErrors((service, usr) -> service.save((BaseEntity) usr), userService, user);
 
-        if (savedUser.getId() == 0) {
+        if (savedUser == null || savedUser.getId() == 0) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to register user!\" }");
         } else {
             return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + savedUser + " }");
@@ -83,12 +85,11 @@ public class UserController {
         }
 
         User updatedUser = (User) handleErrors((service, passedUser) -> service.save((BaseEntity) passedUser), userService, user);
-        if (updatedUser != null) {
-            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + updatedUser + " }");
-        } else {
+        if (updatedUser == null) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to update user!\" }");
+        } else {
+            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + updatedUser + " }");
         }
-
     }
 
     @ResponseBody
@@ -109,7 +110,6 @@ public class UserController {
             userService.delete(id);
         } catch (Exception ex) {
             logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
-//            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
             isError = true;
         }
 
@@ -138,7 +138,6 @@ public class UserController {
             foundUser = userService.getLoggedInUser(form.getLogin(), form.getPassword());
         } catch (Exception ex) {
             logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
-//            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
             isError = true;
         }
 

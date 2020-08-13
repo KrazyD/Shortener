@@ -47,12 +47,17 @@ public class HomeController {
         try {
             resultEntity = func.apply(service, param);
         } catch (Exception ex) {
-            error = ex.getCause().getCause().getMessage();
+            if (ex.getCause() == null) {
+                error = ex.getMessage();
+            } else if(ex.getCause().getCause() == null) {
+                error = ex.getCause().getMessage();
+            } else {
+                error = ex.getCause().getCause().getMessage();
+            }
         }
 
         if (error != null) {
-            logger.error("!!!Error while handle request!!!\n" + error);
-//            System.err.println("!!!Error while handle request!!!\n" + error);
+            logger.error("!!!Error while handle request!!! - " + error);
         }
 
         return resultEntity;

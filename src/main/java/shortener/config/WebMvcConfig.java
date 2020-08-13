@@ -3,6 +3,7 @@ package shortener.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -35,7 +36,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
-        resolvers.add(new CustomHandlerExceptionResolver());
+//        resolvers.add(new CustomHandlerExceptionResolver());
     }
 
     @Bean
@@ -48,6 +49,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                                     getCodeSource().getLocation().toURI()).getPath();
                 Path pathObj = Path.of(path + "/templates/index.html");
                 String content = Files.readString(pathObj, StandardCharsets.UTF_8);
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!DEFAULT CONTROLLER!!!!!!!!!!!!!!!!");
                 return new ModelAndView(new HTMLView(content));
             }
         };
@@ -60,7 +62,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         Map<String, Object> urlMap = new HashMap<>();
         urlMap.put("/**", defaultController());
         simpleUrlHandlerMapping.setUrlMap(urlMap);
-//        simpleUrlHandlerMapping.setOrder(1);
+        simpleUrlHandlerMapping.setOrder(Ordered.LOWEST_PRECEDENCE);
         return simpleUrlHandlerMapping;
     }
 }

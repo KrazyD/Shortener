@@ -9,6 +9,8 @@
 //import org.springframework.stereotype.Component;
 //import shortener.repository.UserRepository;
 //
+//import java.util.Optional;
+//
 //@Component
 //public class SpringDataJpaUserDetailsService implements UserDetailsService {
 //
@@ -16,14 +18,19 @@
 //
 //    @Autowired
 //    public SpringDataJpaUserDetailsService(UserRepository repository) {
+//        super();
 //        this.repository = repository;
 //    }
 //
 //    @Override
 //    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-//        shortener.entity.User user = this.repository.findByLogin(login).orElse(new shortener.entity.User());
-//        return new User(user.getLogin(), user.getPassword(),
-//                AuthorityUtils.createAuthorityList(user.getRoles()));
+//        System.out.println("!!!!!!!!!!!!!!!!!SpringDataJpaUserDetailsService.loadUserByUsername username=" + login);
+//        Optional<shortener.entity.User> user = this.repository.findByLogin(login);
+//        if(user.isEmpty()) {
+//            throw new UsernameNotFoundException(login);
+//        }
+//        return new User(user.get().getLogin(), user.get().getPassword(),
+//                AuthorityUtils.createAuthorityList(user.get().getRoles()));
 //    }
 //
 //}

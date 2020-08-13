@@ -11,3 +11,21 @@
 body .p-datatable tr {
     height: 3.5em;
 }
+
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container-space-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body .p-button.submit-button {
+    width: fit-content;
+}
+

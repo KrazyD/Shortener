@@ -52780,9 +52780,6 @@ var App = /*#__PURE__*/function (_Component) {
     _this.state = {
       growl: null
     };
-    console.log('APP CONSTRUCTOR');
-    console.log('this.state.growl');
-    console.log(_this.state.growl);
     return _this;
   }
 
@@ -52793,9 +52790,6 @@ var App = /*#__PURE__*/function (_Component) {
           _this$props,
           _this$props$location;
 
-      console.log('APP RENDER');
-      console.log('this.state.growl');
-      console.log(this.state.growl);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_growl__WEBPACK_IMPORTED_MODULE_3__["Growl"], {
         ref: function ref(el) {
           return _this2.state.growl ? void 0 : _this2.setState({
@@ -53014,6 +53008,8 @@ var Header = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this$props, _this$props$location, _this$props$location$, _this$props$location$2, _this$props2, _this$props2$location, _this$props3, _this$props3$location, _this$props4, _this$props4$location, _this$props4$location2, _this$props4$location3, _this$props5, _this$props5$location;
 
+      console.log('Header.render this.props=');
+      console.log(this.props);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-space-between"
       }, ((_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : (_this$props$location$2 = _this$props$location$.currentUser) === null || _this$props$location$2 === void 0 ? void 0 : _this$props$location$2.roles) && this.props.location.state.currentUser.roles.includes('ROLE_ADMIN') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
@@ -53193,7 +53189,9 @@ var Main = /*#__PURE__*/function (_Component) {
   _createClass(Main, [{
     key: "render",
     value: function render() {
-      var _this$props, _this$props$location;
+      var _this = this,
+          _this$props,
+          _this$props$location;
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_4__["default"], this.props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         path: "/main/usersList",
@@ -53203,17 +53201,22 @@ var Main = /*#__PURE__*/function (_Component) {
           var roles = props === null || props === void 0 ? void 0 : (_props$location = props.location) === null || _props$location === void 0 ? void 0 : (_props$location$state = _props$location.state) === null || _props$location$state === void 0 ? void 0 : (_props$location$state2 = _props$location$state.currentUser) === null || _props$location$state2 === void 0 ? void 0 : _props$location$state2.roles;
 
           if (roles && roles.includes('ROLE_ADMIN')) {
-            return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_user_UserList__WEBPACK_IMPORTED_MODULE_2__["default"], props);
+            return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_user_UserList__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props, {
+              growl: _this.props.growl
+            }));
           } else {
             return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Error__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props, {
-              message: 'Access is denied!'
+              message: 'Access is denied!',
+              growl: _this.props.growl
             }));
           }
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         path: "/main/refsList",
         render: function render(props) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reference_RefList__WEBPACK_IMPORTED_MODULE_5__["default"], props);
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reference_RefList__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, props, {
+            growl: _this.props.growl
+          }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
         exact: true,
@@ -53379,8 +53382,6 @@ var Login = /*#__PURE__*/function (_Component) {
       isLoggedIn: false,
       authorizedUser: {}
     };
-    console.log('LOGIN CONTSRUCTOR PROPS');
-    console.log(props);
     _this.onSubmit = _this.onSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -53399,7 +53400,11 @@ var Login = /*#__PURE__*/function (_Component) {
     value: function onSubmit(event) {
       var _this2 = this;
 
+      event.preventDefault();
       _webService_UserWebService__WEBPACK_IMPORTED_MODULE_4__["default"].login(this.state.user).then(function (response) {
+        console.log('Login.onSubmit response=');
+        console.log(response);
+
         _this2.setState({
           isLoggedIn: true,
           authorizedUser: response.data
@@ -53419,8 +53424,6 @@ var Login = /*#__PURE__*/function (_Component) {
           _this$props$location,
           _this3 = this;
 
-      console.log('LOGIN RENDER PROPS');
-      console.log(this.props);
       return this.state.isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Redirect"], {
         to: {
           pathname: '/main',
@@ -53429,8 +53432,9 @@ var Login = /*#__PURE__*/function (_Component) {
             from: (_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : _this$props$location.pathname
           }
         }
-      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "p-grid p-fluid input-fields center-container"
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "p-grid p-fluid input-fields center-container",
+        onSubmit: this.onSubmit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -53840,8 +53844,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var primereact_button__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(primereact_button__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _webService_RefWebService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../webService/RefWebService */ "./src/main/js/webService/RefWebService.js");
 /* harmony import */ var _RefDialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./RefDialog */ "./src/main/js/reference/RefDialog.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _app_Header__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../app/Header */ "./src/main/js/app/Header.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -53875,8 +53877,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
 
 
 

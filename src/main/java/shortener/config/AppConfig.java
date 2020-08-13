@@ -25,7 +25,7 @@ public class AppConfig {
         Properties jpaProperties = new Properties();
         jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         jpaProperties.setProperty("hibernate.hbm2ddl.auto", "update");
-//        jpaProperties.setProperty("hibernate.show_sql", "true");
+        jpaProperties.setProperty("hibernate.show_sql", "true");
         jpaProperties.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         entityManager.setJpaProperties(jpaProperties);
         entityManager.setPackagesToScan("shortener.entity");

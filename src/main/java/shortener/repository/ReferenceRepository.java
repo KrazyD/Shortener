@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ReferenceRepository extends CrudRepository<Reference, Long> {
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or @userRepository.findById(#userId).get()?.login == authentication?.name")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @userRepository.findById(#userId).get()?.login == authentication?.name")
     List<Reference> findByUserId(@Param("userId") Long userId);
 
     Optional<Reference> findByReducedRef(String reducedRef);

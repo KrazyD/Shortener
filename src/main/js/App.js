@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import {Growl} from "primereact/growl";
+import { Growl } from "primereact/growl";
 
 import Login from './initial/Login';
 import Register from './initial/Register';

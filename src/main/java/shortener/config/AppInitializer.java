@@ -6,10 +6,9 @@ public class AppInitializer extends
         AbstractAnnotationConfigDispatcherServletInitializer {
 
     // Этот метод должен содержать конфигурации которые инициализируют Beans
-    // для инициализации бинов у нас использовалась аннотация @Bean
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { WebMvcConfig.class, AppConfig.class };
+        return new Class[] { SecurityConfiguration.class, WebMvcConfig.class, AppConfig.class };
     }
 
     // Тут добавляем конфигурацию, в которой инициализируем ViewResolver

@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "user", schema = "public")
 public class User implements BaseEntity, Serializable {
 
-//    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     private static final long serialVersionUID = -7539517893214297867L;
 
@@ -68,8 +68,8 @@ public class User implements BaseEntity, Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
-//        this.password = PASSWORD_ENCODER.encode(password);
+//        this.password = password;
+        this.password = PASSWORD_ENCODER.encode(password);
     }
 
     public String getLogin() {

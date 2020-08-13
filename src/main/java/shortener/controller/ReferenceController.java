@@ -83,7 +83,6 @@ public class ReferenceController {
             }
         } catch (Exception ex) {
             logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
-//            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
         }
         return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
     }
@@ -137,7 +136,6 @@ public class ReferenceController {
             referenceService.delete(ref.getId());
         } catch (Exception ex) {
             logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
-//            System.err.println("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
             isError = true;
         }
 

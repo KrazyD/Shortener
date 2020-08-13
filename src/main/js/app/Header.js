@@ -9,6 +9,10 @@ export default class Header extends Component {
     }
 
     render() {
+
+        console.log('Header.render this.props=');
+        console.log(this.props);
+
         return (
             <div className='container-space-between'>
                 { this.props?.location?.state?.currentUser?.roles &&

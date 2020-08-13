@@ -19,7 +19,7 @@ export default class Error extends Component {
 
     render() {
         return ( this.state.isButtonBackPressed ?
-                <Redirect to={{pathname: this.props.location.state.from,  state:{...this.props.location.state} }} /> :
+                <Redirect to={{pathname: this.props.location.state.from, state:{...this.props.location.state} }} /> :
                 <div className='p-grid p-fluid'>
                     <h2>{this.props.message}</h2>
                     <Button label="Back" className="p-button-raised" onClick={this.onButtonBackClick} />
