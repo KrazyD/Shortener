@@ -26,6 +26,7 @@ export default class Login extends Component {
 
     onSubmit(event) {
         event.preventDefault();
+        // this.setState({ isLoggedIn: true/*, authorizedUser: response.data*/ })
         UserWebService.login(this.state.user).then(response => {
             console.log('Login.onSubmit response=');
             console.log(response);

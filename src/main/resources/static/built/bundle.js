@@ -53006,7 +53006,7 @@ var Header = /*#__PURE__*/function (_Component) {
   _createClass(Header, [{
     key: "render",
     value: function render() {
-      var _this$props, _this$props$location, _this$props$location$, _this$props$location$2, _this$props2, _this$props2$location, _this$props3, _this$props3$location, _this$props4, _this$props4$location, _this$props4$location2, _this$props4$location3, _this$props5, _this$props5$location;
+      var _this$props, _this$props$location, _this$props$location$, _this$props$location$2, _this$props2, _this$props2$location, _this$props3, _this$props3$location, _this$props4, _this$props4$location, _this$props5, _this$props5$location, _this$props6, _this$props6$location, _this$props6$location2, _this$props6$location3, _this$props7, _this$props7$location;
 
       console.log('Header.render this.props=');
       console.log(this.props);
@@ -53015,7 +53015,9 @@ var Header = /*#__PURE__*/function (_Component) {
       }, ((_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : (_this$props$location$2 = _this$props$location$.currentUser) === null || _this$props$location$2 === void 0 ? void 0 : _this$props$location$2.roles) && this.props.location.state.currentUser.roles.includes('ROLE_ADMIN') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: {
           pathname: '/main/usersList',
-          state: _objectSpread({}, (_this$props2 = this.props) === null || _this$props2 === void 0 ? void 0 : (_this$props2$location = _this$props2.location) === null || _this$props2$location === void 0 ? void 0 : _this$props2$location.state)
+          state: _objectSpread({
+            from: (_this$props2 = this.props) === null || _this$props2 === void 0 ? void 0 : (_this$props2$location = _this$props2.location) === null || _this$props2$location === void 0 ? void 0 : _this$props2$location.pathname
+          }, (_this$props3 = this.props) === null || _this$props3 === void 0 ? void 0 : (_this$props3$location = _this$props3.location) === null || _this$props3$location === void 0 ? void 0 : _this$props3$location.state)
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         label: "To users list",
@@ -53023,15 +53025,17 @@ var Header = /*#__PURE__*/function (_Component) {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: {
           pathname: '/main/refsList',
-          state: _objectSpread({}, (_this$props3 = this.props) === null || _this$props3 === void 0 ? void 0 : (_this$props3$location = _this$props3.location) === null || _this$props3$location === void 0 ? void 0 : _this$props3$location.state)
+          state: _objectSpread({
+            from: (_this$props4 = this.props) === null || _this$props4 === void 0 ? void 0 : (_this$props4$location = _this$props4.location) === null || _this$props4$location === void 0 ? void 0 : _this$props4$location.pathname
+          }, (_this$props5 = this.props) === null || _this$props5 === void 0 ? void 0 : (_this$props5$location = _this$props5.location) === null || _this$props5$location === void 0 ? void 0 : _this$props5$location.state)
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         label: "To refs list",
         className: "p-button-raised"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "You logged in as ", (_this$props4 = this.props) === null || _this$props4 === void 0 ? void 0 : (_this$props4$location = _this$props4.location) === null || _this$props4$location === void 0 ? void 0 : (_this$props4$location2 = _this$props4$location.state) === null || _this$props4$location2 === void 0 ? void 0 : (_this$props4$location3 = _this$props4$location2.currentUser) === null || _this$props4$location3 === void 0 ? void 0 : _this$props4$location3.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "You logged in as ", (_this$props6 = this.props) === null || _this$props6 === void 0 ? void 0 : (_this$props6$location = _this$props6.location) === null || _this$props6$location === void 0 ? void 0 : (_this$props6$location2 = _this$props6$location.state) === null || _this$props6$location2 === void 0 ? void 0 : (_this$props6$location3 = _this$props6$location2.currentUser) === null || _this$props6$location3 === void 0 ? void 0 : _this$props6$location3.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: {
           pathname: '/logout',
-          state: _objectSpread({}, (_this$props5 = this.props) === null || _this$props5 === void 0 ? void 0 : (_this$props5$location = _this$props5.location) === null || _this$props5$location === void 0 ? void 0 : _this$props5$location.state)
+          state: _objectSpread({}, (_this$props7 = this.props) === null || _this$props7 === void 0 ? void 0 : (_this$props7$location = _this$props7.location) === null || _this$props7$location === void 0 ? void 0 : _this$props7$location.state)
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         label: "Logout",
@@ -53400,7 +53404,8 @@ var Login = /*#__PURE__*/function (_Component) {
     value: function onSubmit(event) {
       var _this2 = this;
 
-      event.preventDefault();
+      event.preventDefault(); // this.setState({ isLoggedIn: true/*, authorizedUser: response.data*/ })
+
       _webService_UserWebService__WEBPACK_IMPORTED_MODULE_4__["default"].login(this.state.user).then(function (response) {
         console.log('Login.onSubmit response=');
         console.log(response);

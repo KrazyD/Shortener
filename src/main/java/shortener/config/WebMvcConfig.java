@@ -1,5 +1,6 @@
 package shortener.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
@@ -27,6 +29,9 @@ import java.util.Map;
 @ComponentScan(basePackages = {"shortener"})
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    @Autowired
+    private LoggingRequestsInterceptor loggingRequestsInterceptor;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**", "/src/main/resources/**",
@@ -35,8 +40,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loggingRequestsInterceptor)
+                .addPathPatterns("/**");
+    }
+
+    @Override
     public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
-//        resolvers.add(new CustomHandlerExceptionResolver());
+        resolvers.add(new CustomHandlerExceptionResolver());
     }
 
     @Bean
@@ -49,7 +60,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                                     getCodeSource().getLocation().toURI()).getPath();
                 Path pathObj = Path.of(path + "/templates/index.html");
                 String content = Files.readString(pathObj, StandardCharsets.UTF_8);
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!DEFAULT CONTROLLER!!!!!!!!!!!!!!!!");
+                httpServletResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
                 return new ModelAndView(new HTMLView(content));
             }
         };
