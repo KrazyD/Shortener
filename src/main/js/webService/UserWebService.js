@@ -2,6 +2,14 @@ import client from '../webService/client';
 
 export default class UserWebService {
 
+    static registerUser(user) {
+        return client({method: 'POST', path: '/register', entity: user}).then(response => {
+            return response.entity;
+        }, err => {
+            throw UserWebService.getError(err);
+        });
+    }
+
     static getUsers() {
         return client({method: 'GET', path: '/user'}).then(response => {
             return {status: response.entity.status, data: response.entity.data.sort((a, b) => a.id - b.id)};
@@ -18,14 +26,6 @@ export default class UserWebService {
         });
     }
 
-    static registerUser(user) {
-        return client({method: 'POST', path: '/user', entity: user}).then(response => {
-            return response.entity;
-        }, err => {
-            throw UserWebService.getError(err);
-        });
-    }
-
     static updateUser(user) {
         return client({method: 'PUT', path: '/user', entity: user}).then(response => {
             return response.entity;
@@ -34,8 +34,8 @@ export default class UserWebService {
         });
     }
 
-    static login(credentials) {
-        return client({method: 'POST', path: '/login', entity: credentials}).then(response => {
+    static getCurrentLogin() {
+        return client({method: 'GET', path: '/login'}).then(response => {
             return response.entity;
         }, err => {
             throw UserWebService.getError(err);

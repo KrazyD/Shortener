@@ -22,8 +22,6 @@ export default class UserDialog extends Component {
         this.updateProperty = this.updateProperty.bind(this);
     }
 
-    componentDidMount() { }
-
     onSave() {
         let user = this.state.user;
         user.roles = this.state.selectedRoles;
@@ -70,23 +68,24 @@ export default class UserDialog extends Component {
                     <div className='p-grid p-fluid input-fields'>
                         <div className='p-col-4'><label htmlFor='username'>Username</label></div>
                         <div className='p-col-8'>
-                            <InputText id='username' onChange={(e) => this.updateProperty('username', e.target.value)} value={this.state.user.username}/>
+                            <InputText id='username' value={this.state.user.username}
+                                       onChange={(e) => this.updateProperty('username', e.target.value)}/>
                         </div>
 
                         <div className='p-col-4'><label htmlFor='login'>Login</label></div>
                         <div className='p-col-8'>
-                            <InputText id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
+                            <InputText id='login' value={this.state.user.login}
+                                       onChange={(e) => this.updateProperty('login', e.target.value)} />
                         </div>
 
                         <div className='p-col-4'><label htmlFor='password'>Password</label></div>
                         <div className='p-col-8'>
-                            <Password id='password' onChange={(e) => this.updateProperty('password', e.target.value)} value={this.state.user.password} />
+                            <Password id='password' value={this.state.user.password}
+                                      onChange={(e) => this.updateProperty('password', e.target.value)} />
                         </div>
 
-                        <ListBox value={this.state.selectedRoles}
-                                 options={possibleRoles}
-                                 onChange={(e) => this.setState({selectedRoles: e.value})}
-                                 multiple={true} />
+                        <ListBox value={this.state.selectedRoles}  options={possibleRoles} multiple={true}
+                                 onChange={(e) => this.setState({selectedRoles: e.value})} />
                     </div>
                 }
             </Dialog>

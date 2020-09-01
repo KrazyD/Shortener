@@ -1,8 +1,8 @@
-var path = require('path');
+const path = require('path');
 
 module.exports = {
     entry: './src/main/js/App.js',
-    devtool: 'sourcemaps',
+    devtool: 'source-map',
     cache: true,
     mode: 'development',
     output: {

@@ -14,19 +14,14 @@ export default class RefList extends Component {
         this.state = {
             refs: [],
             selectedRef: {fullRef: '', reducedRef: '', requestsNumb: 0, userId: 0},
-            isDialogDisplay: false,
-            isAdmin: false
+            isDialogDisplay: false
         };
-
-        this.props.location.state.from = this.props.location.pathname;
 
         let currentUser = this.props?.location?.state?.currentUser;
         if (currentUser) {
             this.userId = currentUser.hasOwnProperty('id') ? currentUser.id : 0;
-            this.state.isAdmin = currentUser.hasOwnProperty('roles') &&  currentUser.roles.includes('ROLE_ADMIN');
         } else {
             this.userId = 0;
-            this.state.isAdmin = false;
         }
 
         this.menu = [
@@ -44,7 +39,7 @@ export default class RefList extends Component {
         RefWebService.getRefs().then(response => {
             this.setState({refs: response.data});
         }, error => {
-            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+            this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
@@ -66,9 +61,9 @@ export default class RefList extends Component {
         RefWebService.deleteRef(selectedRef).then(response => {
             let index = this.state.refs.indexOf(selectedRef);
             this.setState({refs: this.state.refs.filter((val, i) => i !== index)});
-            this.props.growl.show({severity: 'success', summary: response.status, detail: response.data});
+            this.props.getGrowl().show({severity: 'success', summary: response.status, detail: response.data});
         }, error => {
-            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+            this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
@@ -83,14 +78,14 @@ export default class RefList extends Component {
                             refs: refs,
                             isDialogDisplay: false
                         });
-                        this.props.growl.show({severity: 'success', summary: 'Success', detail: 'Reference is created'});
+                        this.props.getGrowl().show({severity: 'success', summary: 'Success', detail: 'Reference is created'});
                     }, error => {
                         this.setState({isDialogDisplay: false});
-                        this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+                        this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
                     });
                 } else {
                     this.setState({isDialogDisplay: false});
-                    this.props.growl.show({severity: 'error', summary: 'Error', detail: 'ID of current user undefined'});
+                    this.props.getGrowl().show({severity: 'error', summary: 'Error', detail: 'ID of current user undefined'});
                 }
             } else {
                 RefWebService.updateRef(ref).then(response => {
@@ -100,10 +95,10 @@ export default class RefList extends Component {
                     this.setState({
                         isDialogDisplay: false,
                         refs: refs});
-                    this.props.growl.show({severity: 'success', summary: 'Success', detail: 'Reference is updated'});
+                    this.props.getGrowl().show({severity: 'success', summary: 'Success', detail: 'Reference is updated'});
                 }, error => {
                     this.setState({isDialogDisplay: false});
-                    this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+                    this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
                 });
             }
         } else {
@@ -120,7 +115,6 @@ export default class RefList extends Component {
 
         return (
             <div>
-                {/*{this.state.isAdmin && <Link to={{pathname: '/usersList', state:{...this.props.location.state} }} ><Button label="Show all users" className="p-button-raised"/></Link>}*/}
                 <ContextMenu model={this.menu} ref={el => this.cm = el} />
 
                 <DataTable value={this.state.refs} editMode="row" footer={footer} header="Reference list"

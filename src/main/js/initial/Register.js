@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {InputText} from "primereact/inputtext";
-import {Password} from "primereact/password";
+import {InputText} from 'primereact/inputtext';
+import {Password} from 'primereact/password';
 import { Button } from 'primereact/button';
 import {Link, Redirect} from 'react-router-dom';
-import UserWebService from "../webService/UserWebService";
+import UserWebService from '../webService/UserWebService';
 
 export default class Register extends Component {
 
@@ -26,9 +26,10 @@ export default class Register extends Component {
 
     onSubmit(event) {
         UserWebService.registerUser(this.state.user).then(response => {
+            console.log('UserWebService.registerUser');
             this.setState({ isSuccessRegistered: true, authorizedUser: response.data })
         }, error => {
-            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+            this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
@@ -38,21 +39,21 @@ export default class Register extends Component {
             <div className='p-grid p-fluid input-fields center-container'>
                 <div className='p-col-4'><label htmlFor='username'>Username</label></div>
                 <div className='p-col-8'>
-                    <InputText id='username' onChange={(e) => this.updateProperty('username', e.target.value)} value={this.state.user.username}/>
+                    <InputText name='username' id='username' onChange={(e) => this.updateProperty('username', e.target.value)} value={this.state.user.username}/>
                 </div>
 
                 <div className='p-col-4'><label htmlFor='login'>Login</label></div>
                 <div className='p-col-8'>
-                    <InputText id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
+                    <InputText name='login' id='login' onChange={(e) => this.updateProperty('login', e.target.value)} value={this.state.user.login}/>
                 </div>
 
                 <div className='p-col-4'><label htmlFor='password'>Password</label></div>
                 <div className='p-col-8'>
-                    <Password id='password' onChange={(e) => this.updateProperty('password', e.target.value)} value={this.state.user.password} />
+                    <Password name='password' id='password' onChange={(e) => this.updateProperty('password', e.target.value)} value={this.state.user.password} />
                 </div>
                 <div className='container-space-between'>
-                    <Button label="Submit" className="p-button-raised submit-button" onClick={this.onSubmit} />
-                    <Link to={'/home'} ><Button label="Back" className="p-button-raised"/></Link>
+                    <Button type='submit' label='Submit' className='p-button-raised submit-button' onClick={this.onSubmit} />
+                    <Link to={'/home'} ><Button label='Back' className='p-button-raised'/></Link>
                 </div>
             </div>
         )

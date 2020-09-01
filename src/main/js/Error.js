@@ -7,8 +7,11 @@ export default class Error extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isButtonBackPressed: false
+            isButtonBackPressed: false,
+            message: this.props?.location?.search ? this.props.location.search.slice(1) : 'Error!'
         };
+
+        this.redirectPath = this.props?.location?.state?.from ? this.props?.location?.state?.from : '/';
 
         this.onButtonBackClick = this.onButtonBackClick.bind(this);
     }
@@ -19,10 +22,12 @@ export default class Error extends Component {
 
     render() {
         return ( this.state.isButtonBackPressed ?
-                <Redirect to={{pathname: this.props.location.state.from, state:{...this.props.location.state} }} /> :
-                <div className='p-grid p-fluid'>
-                    <h2>{this.props.message}</h2>
-                    <Button label="Back" className="p-button-raised" onClick={this.onButtonBackClick} />
+                <Redirect to={{pathname: this.redirectPath, state:{...this.props?.location?.state} }} /> :
+                <div className='p-grid p-fluid center-container'>
+                    <h2>{this.state?.message?.replace(/_/g, ' ')}</h2>
+                    <div>
+                        <Button label="Back" className="p-button-raised" onClick={this.onButtonBackClick} />
+                    </div>
                 </div>
         )
     }

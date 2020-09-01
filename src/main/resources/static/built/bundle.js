@@ -52716,12 +52716,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _initial_Home__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./initial/Home */ "./src/main/js/initial/Home.js");
 /* harmony import */ var _app_Logout__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app/Logout */ "./src/main/js/app/Logout.js");
 /* harmony import */ var _app_Main__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app/Main */ "./src/main/js/app/Main.js");
-/* harmony import */ var primereact_resources_themes_nova_light_theme_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! primereact/resources/themes/nova-light/theme.css */ "./node_modules/primereact/resources/themes/nova-light/theme.css");
-/* harmony import */ var primereact_resources_themes_nova_light_theme_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(primereact_resources_themes_nova_light_theme_css__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var primereact_resources_primereact_min_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! primereact/resources/primereact.min.css */ "./node_modules/primereact/resources/primereact.min.css");
-/* harmony import */ var primereact_resources_primereact_min_css__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(primereact_resources_primereact_min_css__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var primeicons_primeicons_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! primeicons/primeicons.css */ "./node_modules/primeicons/primeicons.css");
-/* harmony import */ var primeicons_primeicons_css__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(primeicons_primeicons_css__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _Error__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Error */ "./src/main/js/Error.js");
+/* harmony import */ var primereact_resources_themes_nova_light_theme_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! primereact/resources/themes/nova-light/theme.css */ "./node_modules/primereact/resources/themes/nova-light/theme.css");
+/* harmony import */ var primereact_resources_themes_nova_light_theme_css__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(primereact_resources_themes_nova_light_theme_css__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var primereact_resources_primereact_min_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! primereact/resources/primereact.min.css */ "./node_modules/primereact/resources/primereact.min.css");
+/* harmony import */ var primereact_resources_primereact_min_css__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(primereact_resources_primereact_min_css__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var primeicons_primeicons_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! primeicons/primeicons.css */ "./node_modules/primeicons/primeicons.css");
+/* harmony import */ var primeicons_primeicons_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(primeicons_primeicons_css__WEBPACK_IMPORTED_MODULE_12__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -52766,6 +52767,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var App = /*#__PURE__*/function (_Component) {
   _inherits(App, _Component);
 
@@ -52777,9 +52779,7 @@ var App = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, App);
 
     _this = _super.call(this, props);
-    _this.state = {
-      growl: null
-    };
+    _this.growl = null;
     return _this;
   }
 
@@ -52790,48 +52790,62 @@ var App = /*#__PURE__*/function (_Component) {
           _this$props,
           _this$props$location;
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_growl__WEBPACK_IMPORTED_MODULE_3__["Growl"], {
-        ref: function ref(el) {
-          return _this2.state.growl ? void 0 : _this2.setState({
-            growl: el
-          });
+      this.getGrowl = function (ref) {
+        if (ref) {
+          _this2.growl = ref;
         }
+
+        return _this2.growl;
+      };
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_growl__WEBPACK_IMPORTED_MODULE_3__["Growl"], {
+        ref: this.getGrowl
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/home",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_initial_Home__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({}, props, {
-            growl: _this2.state.growl
+            getGrowl: _this2.getGrowl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/login",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_initial_Login__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, props, {
-            growl: _this2.state.growl
+            getGrowl: _this2.getGrowl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/register",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_initial_Register__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, props, {
-            growl: _this2.state.growl
+            getGrowl: _this2.getGrowl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/logout",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_app_Logout__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({}, props, {
-            growl: _this2.state.growl
+            getGrowl: _this2.getGrowl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/main",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_app_Main__WEBPACK_IMPORTED_MODULE_8__["default"], _extends({}, props, {
-            growl: _this2.state.growl
+            getGrowl: _this2.getGrowl
+          }));
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        path: "/error",
+        render: function render(props) {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Error__WEBPACK_IMPORTED_MODULE_9__["default"], _extends({
+            from: "/"
+          }, props, {
+            getGrowl: _this2.getGrowl
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+        exact: true,
         from: "/",
         to: {
           pathname: '/home',
@@ -52901,14 +52915,18 @@ var Error = /*#__PURE__*/function (_Component) {
   var _super = _createSuper(Error);
 
   function Error(props) {
+    var _this$props, _this$props$location, _this$props2, _this$props2$location, _this$props2$location2, _this$props3, _this$props3$location, _this$props3$location2;
+
     var _this;
 
     _classCallCheck(this, Error);
 
     _this = _super.call(this, props);
     _this.state = {
-      isButtonBackPressed: false
+      isButtonBackPressed: false,
+      message: ((_this$props = _this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : _this$props$location.search) ? _this.props.location.search.slice(1) : 'Error!'
     };
+    _this.redirectPath = ((_this$props2 = _this.props) === null || _this$props2 === void 0 ? void 0 : (_this$props2$location = _this$props2.location) === null || _this$props2$location === void 0 ? void 0 : (_this$props2$location2 = _this$props2$location.state) === null || _this$props2$location2 === void 0 ? void 0 : _this$props2$location2.from) ? (_this$props3 = _this.props) === null || _this$props3 === void 0 ? void 0 : (_this$props3$location = _this$props3.location) === null || _this$props3$location === void 0 ? void 0 : (_this$props3$location2 = _this$props3$location.state) === null || _this$props3$location2 === void 0 ? void 0 : _this$props3$location2.from : '/';
     _this.onButtonBackClick = _this.onButtonBackClick.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -52923,18 +52941,20 @@ var Error = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this$props4, _this$props4$location, _this$state, _this$state$message;
+
       return this.state.isButtonBackPressed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
         to: {
-          pathname: this.props.location.state.from,
-          state: _objectSpread({}, this.props.location.state)
+          pathname: this.redirectPath,
+          state: _objectSpread({}, (_this$props4 = this.props) === null || _this$props4 === void 0 ? void 0 : (_this$props4$location = _this$props4.location) === null || _this$props4$location === void 0 ? void 0 : _this$props4$location.state)
         }
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "p-grid p-fluid"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, this.props.message), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+        className: "p-grid p-fluid center-container"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, (_this$state = this.state) === null || _this$state === void 0 ? void 0 : (_this$state$message = _this$state.message) === null || _this$state$message === void 0 ? void 0 : _this$state$message.replace(/_/g, ' ')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         label: "Back",
         className: "p-button-raised",
         onClick: this.onButtonBackClick
-      }));
+      })));
     }
   }]);
 
@@ -53006,13 +53026,11 @@ var Header = /*#__PURE__*/function (_Component) {
   _createClass(Header, [{
     key: "render",
     value: function render() {
-      var _this$props, _this$props$location, _this$props$location$, _this$props$location$2, _this$props2, _this$props2$location, _this$props3, _this$props3$location, _this$props4, _this$props4$location, _this$props5, _this$props5$location, _this$props6, _this$props6$location, _this$props6$location2, _this$props6$location3, _this$props7, _this$props7$location;
+      var _this$props, _this$props$location, _this$props$location$, _this$props$location$2, _this$props$location$3, _this$props2, _this$props2$location, _this$props3, _this$props3$location, _this$props4, _this$props4$location, _this$props5, _this$props5$location, _this$props6, _this$props6$location, _this$props6$location2, _this$props6$location3, _this$props7, _this$props7$location;
 
-      console.log('Header.render this.props=');
-      console.log(this.props);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-space-between"
-      }, ((_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : (_this$props$location$2 = _this$props$location$.currentUser) === null || _this$props$location$2 === void 0 ? void 0 : _this$props$location$2.roles) && this.props.location.state.currentUser.roles.includes('ROLE_ADMIN') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+      }, ((_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : (_this$props$location$2 = _this$props$location$.currentUser) === null || _this$props$location$2 === void 0 ? void 0 : (_this$props$location$3 = _this$props$location$2.roles) === null || _this$props$location$3 === void 0 ? void 0 : _this$props$location$3.includes('ROLE_ADMIN')) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: {
           pathname: '/main/usersList',
           state: _objectSpread({
@@ -53105,7 +53123,7 @@ var Logout = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this$props, _this$props$location, _this$props$location$, _this$props$location$2;
 
-      this.props.growl.show({
+      this.props.getGrowl().show({
         severity: 'success',
         summary: 'Logout',
         detail: 'You successfully logout from account ' + ((_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : (_this$props$location$2 = _this$props$location$.currentUser) === null || _this$props$location$2 === void 0 ? void 0 : _this$props$location$2.username)
@@ -53142,6 +53160,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Error */ "./src/main/js/Error.js");
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Header */ "./src/main/js/app/Header.js");
 /* harmony import */ var _reference_RefList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reference/RefList */ "./src/main/js/reference/RefList.js");
+/* harmony import */ var _webService_UserWebService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../webService/UserWebService */ "./src/main/js/webService/UserWebService.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -53179,24 +53198,51 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Main = /*#__PURE__*/function (_Component) {
   _inherits(Main, _Component);
 
   var _super = _createSuper(Main);
 
   function Main(props) {
+    var _this$props, _this$props$location;
+
+    var _this;
+
     _classCallCheck(this, Main);
 
-    return _super.call(this, props);
+    _this = _super.call(this, props);
+    _this.state = {
+      isUserReceived: false,
+      authorizedUser: {}
+    };
+
+    if (((_this$props = _this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : _this$props$location.search) === '?authorised') {
+      _webService_UserWebService__WEBPACK_IMPORTED_MODULE_6__["default"].getCurrentLogin().then(function (response) {
+        _this.setState({
+          authorizedUser: Object.assign({}, response.data),
+          isUserReceived: true
+        });
+      }, function (error) {
+        _this.props.getGrowl().show({
+          severity: 'error',
+          summary: error.status,
+          detail: error.message
+        });
+      });
+    }
+
+    return _this;
   }
 
   _createClass(Main, [{
     key: "render",
     value: function render() {
-      var _this = this,
-          _this$props,
-          _this$props$location;
+      var _this2 = this,
+          _this$props2,
+          _this$props2$location;
 
+      // TODO Customize the 403 https://www.baeldung.com/spring-security-custom-access-denied-page
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_4__["default"], this.props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         path: "/main/usersList",
         render: function render(props) {
@@ -53206,12 +53252,12 @@ var Main = /*#__PURE__*/function (_Component) {
 
           if (roles && roles.includes('ROLE_ADMIN')) {
             return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_user_UserList__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props, {
-              growl: _this.props.growl
+              getGrowl: _this2.props.getGrowl
             }));
           } else {
             return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Error__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props, {
               message: 'Access is denied!',
-              growl: _this.props.growl
+              getGrowl: _this2.props.getGrowl
             }));
           }
         }
@@ -53219,15 +53265,15 @@ var Main = /*#__PURE__*/function (_Component) {
         path: "/main/refsList",
         render: function render(props) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reference_RefList__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, props, {
-            growl: _this.props.growl
+            getGrowl: _this2.props.getGrowl
           }));
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
-        exact: true,
-        from: "/main",
+      }), this.state.isUserReceived && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
         to: {
           pathname: '/main/refsList',
-          state: _objectSpread({}, (_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : _this$props$location.state)
+          state: _objectSpread({
+            currentUser: this.state.authorizedUser
+          }, (_this$props2 = this.props) === null || _this$props2 === void 0 ? void 0 : (_this$props2$location = _this$props2.location) === null || _this$props2$location === void 0 ? void 0 : _this$props2$location.state)
         }
       })));
     }
@@ -53336,8 +53382,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var primereact_password__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primereact_password__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var primereact_button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primereact/button */ "./node_modules/primereact/button.js");
 /* harmony import */ var primereact_button__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primereact_button__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _webService_UserWebService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../webService/UserWebService */ "./src/main/js/webService/UserWebService.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53366,7 +53411,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
 var Login = /*#__PURE__*/function (_Component) {
   _inherits(Login, _Component);
 
@@ -53383,10 +53427,8 @@ var Login = /*#__PURE__*/function (_Component) {
         login: '',
         password: ''
       },
-      isLoggedIn: false,
       authorizedUser: {}
     };
-    _this.onSubmit = _this.onSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -53400,46 +53442,14 @@ var Login = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "onSubmit",
-    value: function onSubmit(event) {
-      var _this2 = this;
-
-      event.preventDefault(); // this.setState({ isLoggedIn: true/*, authorizedUser: response.data*/ })
-
-      _webService_UserWebService__WEBPACK_IMPORTED_MODULE_4__["default"].login(this.state.user).then(function (response) {
-        console.log('Login.onSubmit response=');
-        console.log(response);
-
-        _this2.setState({
-          isLoggedIn: true,
-          authorizedUser: response.data
-        });
-      }, function (error) {
-        _this2.props.growl.show({
-          severity: 'error',
-          summary: error.status,
-          detail: error.message
-        });
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this$props,
-          _this$props$location,
-          _this3 = this;
+      var _this2 = this;
 
-      return this.state.isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Redirect"], {
-        to: {
-          pathname: '/main',
-          state: {
-            currentUser: this.state.authorizedUser,
-            from: (_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : _this$props$location.pathname
-          }
-        }
-      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "p-grid p-fluid input-fields center-container",
-        onSubmit: this.onSubmit
+        action: '/login',
+        method: "post"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -53447,9 +53457,10 @@ var Login = /*#__PURE__*/function (_Component) {
       }, "Login")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_inputtext__WEBPACK_IMPORTED_MODULE_1__["InputText"], {
+        name: "login",
         id: "login",
         onChange: function onChange(e) {
-          return _this3.updateProperty('login', e.target.value);
+          return _this2.updateProperty('login', e.target.value);
         },
         value: this.state.user.login
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -53459,19 +53470,20 @@ var Login = /*#__PURE__*/function (_Component) {
       }, "Password")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_password__WEBPACK_IMPORTED_MODULE_2__["Password"], {
+        name: "password",
         id: "password",
         onChange: function onChange(e) {
-          return _this3.updateProperty('password', e.target.value);
+          return _this2.updateProperty('password', e.target.value);
         },
         feedback: false,
         value: this.state.user.password
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-space-between"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        type: "submit",
         label: "Submit",
-        className: "p-button-raised submit-button",
-        onClick: this.onSubmit
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Link"], {
+        className: "p-button-raised submit-button"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Link"], {
         to: '/home'
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_3__["Button"], {
         label: "Back",
@@ -53575,12 +53587,14 @@ var Register = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       _webService_UserWebService__WEBPACK_IMPORTED_MODULE_5__["default"].registerUser(this.state.user).then(function (response) {
+        console.log('UserWebService.registerUser');
+
         _this2.setState({
           isSuccessRegistered: true,
           authorizedUser: response.data
         });
       }, function (error) {
-        _this2.props.growl.show({
+        _this2.props.getGrowl().show({
           severity: 'error',
           summary: error.status,
           detail: error.message
@@ -53611,6 +53625,7 @@ var Register = /*#__PURE__*/function (_Component) {
       }, "Username")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_inputtext__WEBPACK_IMPORTED_MODULE_1__["InputText"], {
+        name: "username",
         id: "username",
         onChange: function onChange(e) {
           return _this3.updateProperty('username', e.target.value);
@@ -53623,6 +53638,7 @@ var Register = /*#__PURE__*/function (_Component) {
       }, "Login")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_inputtext__WEBPACK_IMPORTED_MODULE_1__["InputText"], {
+        name: "login",
         id: "login",
         onChange: function onChange(e) {
           return _this3.updateProperty('login', e.target.value);
@@ -53635,6 +53651,7 @@ var Register = /*#__PURE__*/function (_Component) {
       }, "Password")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_password__WEBPACK_IMPORTED_MODULE_2__["Password"], {
+        name: "password",
         id: "password",
         onChange: function onChange(e) {
           return _this3.updateProperty('password', e.target.value);
@@ -53643,6 +53660,7 @@ var Register = /*#__PURE__*/function (_Component) {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-space-between"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_button__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        type: "submit",
         label: "Submit",
         className: "p-button-raised submit-button",
         onClick: this.onSubmit
@@ -53919,7 +53937,7 @@ var RefList = /*#__PURE__*/function (_Component) {
                 isDialogDisplay: false
               });
 
-              _this.props.growl.show({
+              _this.props.getGrowl().show({
                 severity: 'success',
                 summary: 'Success',
                 detail: 'Reference is created'
@@ -53929,7 +53947,7 @@ var RefList = /*#__PURE__*/function (_Component) {
                 isDialogDisplay: false
               });
 
-              _this.props.growl.show({
+              _this.props.getGrowl().show({
                 severity: 'error',
                 summary: error.status,
                 detail: error.message
@@ -53940,7 +53958,7 @@ var RefList = /*#__PURE__*/function (_Component) {
               isDialogDisplay: false
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'error',
               summary: 'Error',
               detail: 'ID of current user undefined'
@@ -53960,7 +53978,7 @@ var RefList = /*#__PURE__*/function (_Component) {
               refs: refs
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'success',
               summary: 'Success',
               detail: 'Reference is updated'
@@ -53970,7 +53988,7 @@ var RefList = /*#__PURE__*/function (_Component) {
               isDialogDisplay: false
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'error',
               summary: error.status,
               detail: error.message
@@ -53992,18 +54010,14 @@ var RefList = /*#__PURE__*/function (_Component) {
         requestsNumb: 0,
         userId: 0
       },
-      isDialogDisplay: false,
-      isAdmin: false
+      isDialogDisplay: false
     };
-    _this.props.location.state.from = _this.props.location.pathname;
     var currentUser = (_this$props = _this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : _this$props$location$.currentUser;
 
     if (currentUser) {
       _this.userId = currentUser.hasOwnProperty('id') ? currentUser.id : 0;
-      _this.state.isAdmin = currentUser.hasOwnProperty('roles') && currentUser.roles.includes('ROLE_ADMIN');
     } else {
       _this.userId = 0;
-      _this.state.isAdmin = false;
     }
 
     _this.menu = [{
@@ -54041,7 +54055,7 @@ var RefList = /*#__PURE__*/function (_Component) {
           refs: response.data
         });
       }, function (error) {
-        _this2.props.growl.show({
+        _this2.props.getGrowl().show({
           severity: 'error',
           summary: error.status,
           detail: error.message
@@ -54083,13 +54097,13 @@ var RefList = /*#__PURE__*/function (_Component) {
           })
         });
 
-        _this3.props.growl.show({
+        _this3.props.getGrowl().show({
           severity: 'success',
           summary: response.status,
           detail: response.data
         });
       }, function (error) {
-        _this3.props.growl.show({
+        _this3.props.getGrowl().show({
           severity: 'error',
           summary: error.status,
           detail: error.message
@@ -54256,9 +54270,6 @@ var UserDialog = /*#__PURE__*/function (_Component) {
   }
 
   _createClass(UserDialog, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
     key: "onSave",
     value: function onSave() {
       var user = this.state.user;
@@ -54336,10 +54347,10 @@ var UserDialog = /*#__PURE__*/function (_Component) {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_inputtext__WEBPACK_IMPORTED_MODULE_1__["InputText"], {
         id: "username",
+        value: this.state.user.username,
         onChange: function onChange(e) {
           return _this2.updateProperty('username', e.target.value);
-        },
-        value: this.state.user.username
+        }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -54348,10 +54359,10 @@ var UserDialog = /*#__PURE__*/function (_Component) {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_inputtext__WEBPACK_IMPORTED_MODULE_1__["InputText"], {
         id: "login",
+        value: this.state.user.login,
         onChange: function onChange(e) {
           return _this2.updateProperty('login', e.target.value);
-        },
-        value: this.state.user.login
+        }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-col-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -54360,19 +54371,19 @@ var UserDialog = /*#__PURE__*/function (_Component) {
         className: "p-col-8"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_password__WEBPACK_IMPORTED_MODULE_4__["Password"], {
         id: "password",
+        value: this.state.user.password,
         onChange: function onChange(e) {
           return _this2.updateProperty('password', e.target.value);
-        },
-        value: this.state.user.password
+        }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_listbox__WEBPACK_IMPORTED_MODULE_5__["ListBox"], {
         value: this.state.selectedRoles,
         options: possibleRoles,
+        multiple: true,
         onChange: function onChange(e) {
           return _this2.setState({
             selectedRoles: e.value
           });
-        },
-        multiple: true
+        }
       })));
     }
   }]);
@@ -54473,7 +54484,7 @@ var UserList = /*#__PURE__*/function (_Component) {
               isDialogDisplay: false
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'success',
               summary: 'Success',
               detail: 'User is registered'
@@ -54483,7 +54494,7 @@ var UserList = /*#__PURE__*/function (_Component) {
               isDialogDisplay: false
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'error',
               summary: error.status,
               detail: error.message
@@ -54503,7 +54514,7 @@ var UserList = /*#__PURE__*/function (_Component) {
               users: users
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'success',
               summary: 'Success',
               detail: 'User is updated'
@@ -54513,7 +54524,7 @@ var UserList = /*#__PURE__*/function (_Component) {
               isDialogDisplay: false
             });
 
-            _this.props.growl.show({
+            _this.props.getGrowl().show({
               severity: 'error',
               summary: error.status,
               detail: error.message
@@ -54572,7 +54583,7 @@ var UserList = /*#__PURE__*/function (_Component) {
           users: response.data
         });
       }, function (error) {
-        _this2.props.growl.show({
+        _this2.props.getGrowl().show({
           severity: 'error',
           summary: error.status,
           detail: error.message
@@ -54614,13 +54625,13 @@ var UserList = /*#__PURE__*/function (_Component) {
           })
         });
 
-        _this3.props.growl.show({
+        _this3.props.getGrowl().show({
           severity: 'success',
           summary: response.status,
           detail: response.data
         });
       }, function (error) {
-        _this3.props.growl.show({
+        _this3.props.getGrowl().show({
           severity: 'error',
           summary: error.status,
           detail: error.message
@@ -54854,6 +54865,19 @@ var UserWebService = /*#__PURE__*/function () {
   }
 
   _createClass(UserWebService, null, [{
+    key: "registerUser",
+    value: function registerUser(user) {
+      return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
+        method: 'POST',
+        path: '/register',
+        entity: user
+      }).then(function (response) {
+        return response.entity;
+      }, function (err) {
+        throw UserWebService.getError(err);
+      });
+    }
+  }, {
     key: "getUsers",
     value: function getUsers() {
       return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
@@ -54883,19 +54907,6 @@ var UserWebService = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "registerUser",
-    value: function registerUser(user) {
-      return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
-        method: 'POST',
-        path: '/user',
-        entity: user
-      }).then(function (response) {
-        return response.entity;
-      }, function (err) {
-        throw UserWebService.getError(err);
-      });
-    }
-  }, {
     key: "updateUser",
     value: function updateUser(user) {
       return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
@@ -54909,12 +54920,11 @@ var UserWebService = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "login",
-    value: function login(credentials) {
+    key: "getCurrentLogin",
+    value: function getCurrentLogin() {
       return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
-        method: 'POST',
-        path: '/login',
-        entity: credentials
+        method: 'GET',
+        path: '/login'
       }).then(function (response) {
         return response.entity;
       }, function (err) {

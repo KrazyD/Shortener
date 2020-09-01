@@ -9,15 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "user", schema = "public")
 public class User implements BaseEntity, Serializable {
-
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     private static final long serialVersionUID = -7539517893214297867L;
 
@@ -68,8 +65,7 @@ public class User implements BaseEntity, Serializable {
     }
 
     public void setPassword(String password) {
-//        this.password = password;
-        this.password = PASSWORD_ENCODER.encode(password);
+        this.password = password;
     }
 
     public String getLogin() {

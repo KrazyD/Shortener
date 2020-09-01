@@ -9,19 +9,16 @@ export default class Header extends Component {
     }
 
     render() {
-
-        console.log('Header.render this.props=');
-        console.log(this.props);
-
         return (
             <div className='container-space-between'>
-                { this.props?.location?.state?.currentUser?.roles &&
-                    this.props.location.state.currentUser.roles.includes('ROLE_ADMIN') &&
+                { this.props?.location?.state?.currentUser?.roles?.includes('ROLE_ADMIN') &&
                     <div>
-                        <Link to={{pathname: '/main/usersList', state:{ from: this.props?.location?.pathname,...this.props?.location?.state} }} >
+                        <Link to={{pathname: '/main/usersList',
+                            state:{ from: this.props?.location?.pathname, ...this.props?.location?.state} }} >
                             <Button label="To users list" className="p-button-raised"/>
                         </Link>
-                        <Link to={{pathname: '/main/refsList', state:{ from: this.props?.location?.pathname, ...this.props?.location?.state} }} >
+                        <Link to={{pathname: '/main/refsList',
+                            state:{ from: this.props?.location?.pathname, ...this.props?.location?.state} }} >
                             <Button label="To refs list" className="p-button-raised"/>
                         </Link>
                     </div>

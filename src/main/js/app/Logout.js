@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 export default class Logout extends Component {
 
@@ -8,7 +8,7 @@ export default class Logout extends Component {
     }
 
     render() {
-        this.props.growl.show({severity: 'success', summary: 'Logout', detail: 'You successfully logout from account '
+        this.props.getGrowl().show({severity: 'success', summary: 'Logout', detail: 'You successfully logout from account '
                 + this.props?.location?.state?.currentUser?.username });
         return ( <Redirect to={{pathname: '/home'}} /> )
     }

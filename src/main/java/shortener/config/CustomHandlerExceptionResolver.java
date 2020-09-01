@@ -42,6 +42,8 @@ public class CustomHandlerExceptionResolver extends DefaultHandlerExceptionResol
 
         response.setHeader("Content-Type", "text/html;charset=UTF-8");
 
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!CustomHandlerExceptionResolver");
+
         if (path != null) {
             Path pathObj = Path.of(path + "/templates/index.html");
             String content = Files.readString(pathObj, StandardCharsets.UTF_8);

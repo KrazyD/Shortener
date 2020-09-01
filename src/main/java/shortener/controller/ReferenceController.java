@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import shortener.entity.*;
 import shortener.service.IReferenceService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static shortener.controller.HomeController.getErrorMessage;
 import static shortener.controller.HomeController.handleErrors;
@@ -27,6 +30,23 @@ public class ReferenceController {
     @Autowired
     private IReferenceService referenceService;
 
+    @GetMapping(value = "/smal.link/*")
+    public String useShortRef(HttpServletRequest request) {
+
+        String fullRef = null;
+
+        if (request.getRequestURI().length() > 1) {
+            Reference ref = referenceService.findByReducedRef(request.getRequestURI().substring(1));
+            fullRef = ref.getfullRef();
+        }
+
+        if (fullRef != null && fullRef.length() > 7) {
+            return "redirect:" + fullRef;
+        } else {
+            return "redirect:/error?Error_processing_reference";
+        }
+    }
+
     @ResponseBody
     @PostMapping(value = "/ref")
     public ResponseEntity<String> createReferences(@Valid @RequestBody ReferenceForm refForm, Errors errors) {
@@ -37,6 +57,13 @@ public class ReferenceController {
 
         if (refForm.getUserId() == 0) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"UserId can not be 0!\" }");
+        }
+
+        Pattern pattern = Pattern.compile("^(?:http(s)?:\\/\\/)[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#\\[\\]\\@!\\$\\&\\'\\(\\)\\*\\+,;=.]+$");
+        Matcher matcher = pattern.matcher(refForm.getFullRef());
+
+        if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Full reference not valid!\" }");
         }
 
         String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));

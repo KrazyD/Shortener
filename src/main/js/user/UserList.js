@@ -32,7 +32,7 @@ export default class UserList extends Component {
         UserWebService.getUsers().then(response => {
             this.setState({users: response.data});
         }, error => {
-            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+            this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
@@ -54,9 +54,9 @@ export default class UserList extends Component {
         UserWebService.deleteUser(selectedUser).then(response => {
             let index = this.state.users.indexOf(selectedUser);
             this.setState({users: this.state.users.filter((val, i) => i !== index)});
-            this.props.growl.show({severity: 'success', summary: response.status, detail: response.data});
+            this.props.getGrowl().show({severity: 'success', summary: response.status, detail: response.data});
         }, error => {
-            this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+            this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
         });
     }
 
@@ -70,10 +70,10 @@ export default class UserList extends Component {
                         users: users,
                         isDialogDisplay: false
                     });
-                    this.props.growl.show({severity: 'success', summary: 'Success', detail: 'User is registered'});
+                    this.props.getGrowl().show({severity: 'success', summary: 'Success', detail: 'User is registered'});
                 }, error => {
                     this.setState({isDialogDisplay: false});
-                    this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+                    this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
                 });
             } else {
                 UserWebService.updateUser(user).then(response => {
@@ -83,10 +83,10 @@ export default class UserList extends Component {
                     this.setState({
                         isDialogDisplay: false,
                         users: users});
-                    this.props.growl.show({severity: 'success', summary: 'Success', detail: 'User is updated'});
+                    this.props.getGrowl().show({severity: 'success', summary: 'Success', detail: 'User is updated'});
                 }, error => {
                     this.setState({isDialogDisplay: false});
-                    this.props.growl.show({severity: 'error', summary: error.status, detail: error.message});
+                    this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
                 });
             }
         } else {

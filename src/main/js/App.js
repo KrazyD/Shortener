@@ -9,6 +9,7 @@ import Register from './initial/Register';
 import Home from './initial/Home'
 import Logout from "./app/Logout";
 import Main from "./app/Main";
+import Error from "./Error";
 
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -19,22 +20,30 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            growl: null
-        };
+        this.growl = null;
     }
 
+
     render() {
+
+        this.getGrowl = ref => {
+            if(ref) {
+                this.growl = ref;
+            }
+            return this.growl;
+        };
+
         return (
             <div>
-                <Growl ref={(el) => this.state.growl ? void(0): this.setState({growl: el}) } />
+                <Growl ref={this.getGrowl} />
                 <Switch>
-                    <Route path='/home' render={(props) => <Home {...props} growl={this.state.growl} /> } />
-                    <Route path='/login' render={(props) => <Login {...props} growl={this.state.growl} /> }/>
-                    <Route path='/register' render={(props) => <Register {...props} growl={this.state.growl} />} />
-                    <Route path='/logout' render={(props) => <Logout {...props} growl={this.state.growl} /> }/>
-                    <Route path='/main' render={(props) => <Main {...props} growl={this.state.growl} />} />
-                    <Redirect from='/' to={{pathname: '/home', state:{...this.props?.location?.state} }} />
+                    <Route path='/home' render={(props) => <Home {...props} getGrowl={this.getGrowl} /> } />
+                    <Route path='/login' render={(props) => <Login {...props} getGrowl={this.getGrowl} /> }/>
+                    <Route path='/register' render={(props) => <Register {...props} getGrowl={this.getGrowl} />} />
+                    <Route path='/logout' render={(props) => <Logout {...props} getGrowl={this.getGrowl} /> }/>
+                    <Route path='/main' render={(props) => <Main {...props} getGrowl={this.getGrowl} />} />
+                    <Route path='/error' render={(props) => <Error from='/' {...props} getGrowl={this.getGrowl} />} />
+                    <Redirect exact from='/' to={{pathname: '/home', state:{...this.props?.location?.state} }} />
                 </Switch>
             </div>
         )

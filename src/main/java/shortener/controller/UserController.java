@@ -5,21 +5,17 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import shortener.entity.BaseEntity;
-import shortener.entity.LoginForm;
-import shortener.entity.RegistrationForm;
 import shortener.entity.User;
 import shortener.service.IUserService;
 
 import javax.validation.Valid;
-
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static shortener.controller.HomeController.getErrorMessage;
 import static shortener.controller.HomeController.handleErrors;
@@ -31,25 +27,6 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
-
-    @ResponseBody
-    @PostMapping(value = "/user")
-    public ResponseEntity<String> registerUsers(@Valid @RequestBody RegistrationForm form, Errors errors) {
-
-        if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getErrorMessage(errors) + " }");
-        }
-
-        User user = new User(form.getPassword(), form.getLogin(), form.getUsername(), form.getRoles());
-
-        User savedUser = (User) handleErrors((service, usr) -> service.save((BaseEntity) usr), userService, user);
-
-        if (savedUser == null || savedUser.getId() == 0) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to register user!\" }");
-        } else {
-            return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + savedUser + " }");
-        }
-    }
 
     @ResponseBody
     @GetMapping(value = "/user")
@@ -121,31 +98,22 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginForm form, Errors errors) {
-        if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getErrorMessage(errors) + " }");
-        }
+    @GetMapping(value = "/login")
+    public ResponseEntity<String> getCurrentUser() {
 
-        if (form == null) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Data is not present!\" }");
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        User foundUser = null;
+        if (authentication.isAuthenticated()) {
+            String username = authentication.getName();
 
-        boolean isError = false;
-        try {
-            foundUser = userService.getLoggedInUser(form.getLogin(), form.getPassword());
-        } catch (Exception ex) {
-            logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
-            isError = true;
-        }
+            String roles = authentication.getAuthorities().stream()
+                    .map((auth -> "\"" + auth + "\""))
+                    .collect(Collectors.joining(","));
 
-        if (isError || foundUser.getId() == 0) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
+            return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\": {" + "\"username\":\"" +
+                    username + "\",\"roles\": [" + roles + "] } }");
         } else {
-            return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\":" + foundUser + " }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"User is not authenticated!\" }");
         }
-
     }
 }

@@ -61,6 +61,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 Path pathObj = Path.of(path + "/templates/index.html");
                 String content = Files.readString(pathObj, StandardCharsets.UTF_8);
                 httpServletResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
+//                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!defaultController " +
+//                        httpServletRequest.getMethod() + "!!!!!" + httpServletRequest.getRequestURI());
                 return new ModelAndView(new HTMLView(content));
             }
         };

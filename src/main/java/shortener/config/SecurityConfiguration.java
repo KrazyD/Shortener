@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -16,35 +17,38 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationProvider authProvider;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .authenticationProvider(authProvider);
-//                .passwordEncoder(User.PASSWORD_ENCODER);
+//                .passwordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/static/**", "/resources/**", "/src/main/resources/**").permitAll()
+                .antMatchers("/static/**", "/resources/static/**",
+                        "/src/main/resources/**", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .loginProcessingUrl("/main")
-                .defaultSuccessUrl("/",false)
-                .failureUrl("/")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/main?authorised",true)
+                .failureUrl("/error?Access_denied")
                 .permitAll()
                 .and()
                 .httpBasic()
                 .and()
                 .csrf().disable()
                 .logout()
-                .logoutSuccessUrl("/")
-                .and()
-                .addFilter(new JsonAuthenticationFilter(authenticationManager()));
+                .logoutSuccessUrl("/");
+//        настроить logout
     }
 
 }
