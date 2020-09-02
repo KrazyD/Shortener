@@ -13,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.AbstractController;
+import shortener.config.custom.CustomHandlerExceptionResolver;
+import shortener.config.custom.HTMLView;
+import shortener.config.custom.LoggingRequestsInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

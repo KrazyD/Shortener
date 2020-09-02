@@ -1,4 +1,4 @@
-package shortener.config;
+package shortener.config.custom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -35,14 +35,19 @@ public class ReferenceController {
     @GetMapping(value = "/smal.link/*")
     public String useShortRef(HttpServletRequest request) {
 
-        String fullRef = null;
-
-        if (request.getRequestURI().length() > 1) {
-            Reference ref = referenceService.findByReducedRef(request.getRequestURI().substring(1));
-            fullRef = ref.getfullRef();
+        if (request.getRequestURI().length() <= 1) {
+            return "redirect:/error?Error_processing_reference";
         }
 
-        if (fullRef != null && fullRef.length() > 7) {
+        Reference ref = referenceService.findByReducedRef(request.getRequestURI().substring(1));
+
+        if (ref != null && ref.getfullRef() != null && ref.getfullRef().length() > 7) {
+            String fullRef = ref.getfullRef();
+
+            ref.setrequestsNumb(ref.getrequestsNumb() + 1);
+
+            referenceService.save(ref);
+
             return "redirect:" + fullRef;
         } else {
             return "redirect:/error?Error_processing_reference";

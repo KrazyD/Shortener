@@ -1,4 +1,4 @@
-package shortener.config;
+package shortener.config.custom;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

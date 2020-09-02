@@ -1,4 +1,4 @@
-package shortener.config;
+package shortener.config.custom;
 
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 

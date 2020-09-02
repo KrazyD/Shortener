@@ -46,7 +46,7 @@ public class User implements BaseEntity, Serializable {
     private String username;
 
     @Column(name = "roles")
-    @Type(type = "shortener.config.StringArrayType")
+    @Type(type = "shortener.config.custom.StringArrayType")
     private String[] roles;
 
     @OneToMany(mappedBy = "userId")

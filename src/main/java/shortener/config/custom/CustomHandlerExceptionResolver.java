@@ -1,4 +1,4 @@
-package shortener.config;
+package shortener.config.custom;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
+import shortener.config.WebMvcConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,8 +42,6 @@ public class CustomHandlerExceptionResolver extends DefaultHandlerExceptionResol
         }
 
         response.setHeader("Content-Type", "text/html;charset=UTF-8");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!CustomHandlerExceptionResolver");
 
         if (path != null) {
             Path pathObj = Path.of(path + "/templates/index.html");

@@ -54,5 +54,4 @@ public class ReferenceService implements IReferenceService {
     public void delete(Long id) {
         referenceRepository.deleteById(id);
     }
-
 }

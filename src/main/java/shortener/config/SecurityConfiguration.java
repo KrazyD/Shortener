@@ -7,7 +7,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import shortener.config.custom.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -18,13 +19,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationProvider authProvider;
 
     @Autowired
-    private PasswordEncoder encoder;
+    private AccessDeniedHandler customAccessDeniedHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .authenticationProvider(authProvider);
-//                .passwordEncoder();
+        auth.authenticationProvider(authProvider);
     }
 
     @Override
@@ -47,8 +46,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .logout()
-                .logoutSuccessUrl("/");
-//        настроить logout
+                .logoutSuccessUrl("/")
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 
 }
