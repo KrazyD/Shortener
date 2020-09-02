@@ -3,9 +3,9 @@ import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import UserWebService from '../webService/UserWebService';
 
-import UserDialog from "./UserDialog";
+import UserDialog from './UserDialog';
 import {ContextMenu} from 'primereact/contextmenu';
-import {Button} from "primereact/button";
+import {Button} from 'primereact/button';
 
 export default class UserList extends Component {
 
@@ -102,23 +102,23 @@ export default class UserList extends Component {
 
     render() {
 
-        let footer = <div className="p-clearfix" >
-            <Button label="Add" icon="pi pi-plus" onClick={this.onRowAdd}/>
+        let footer = <div className='p-clearfix' >
+            <Button label='Add' icon='pi pi-plus' onClick={this.onRowAdd}/>
         </div>;
 
         return (
             <div>
                 <ContextMenu model={this.menu} ref={el => this.cm = el} />
 
-                <DataTable value={this.state.users} editMode="row" footer={footer} header="Users list"
+                <DataTable value={this.state.users} editMode='row' footer={footer} header='Users list'
                            contextMenuSelection={(e) => this.state.selectedUser}
                            onContextMenuSelectionChange={e => this.setState({selectedUser: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
-                    <Column field="id" header="User Id" style={{width: '6%'}}/>
-                    <Column field="username" header="Username" style={{width: '21%'}}/>
-                    <Column field="login" header="Login" style={{width: '21%'}}/>
-                    <Column field="password" header="Password" style={{width: '21%'}}/>
-                    <Column body={this.renderRoles} field="roles" header="Roles" style={{width: '21%'}}/>
+                    <Column className='overflow-text' field='id' header='User Id' style={{width: '6%'}}/>
+                    <Column className='overflow-text' field='username' header='Username' style={{width: '21%'}}/>
+                    <Column className='overflow-text' field='login' header='Login' style={{width: '21%'}}/>
+                    <Column className='overflow-text' field='password' header='Password' style={{width: '21%'}}/>
+                    <Column body={this.renderRoles} field='roles' header='Roles' style={{width: '21%'}}/>
                 </DataTable>
                 <UserDialog isDialogDisplay={this.state.isDialogDisplay}
                             onChangeFinish={this.handleUserFromDialog}

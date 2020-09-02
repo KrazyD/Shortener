@@ -54144,30 +54144,35 @@ var RefList = /*#__PURE__*/function (_Component) {
           return _this4.cm.show(e.originalEvent);
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "id",
         header: "Reference Id",
         style: {
           width: '8%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "fullRef",
         header: "Full Reference",
         style: {
           width: '60%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "reducedRef",
         header: "Reduced Reference",
         style: {
           width: '14%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "requestsNumb",
         header: "Requests Number",
         style: {
           width: '10%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "userId",
         header: "User Id",
         style: {
@@ -54677,24 +54682,28 @@ var UserList = /*#__PURE__*/function (_Component) {
           return _this4.cm.show(e.originalEvent);
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "id",
         header: "User Id",
         style: {
           width: '6%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "username",
         header: "Username",
         style: {
           width: '21%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "login",
         header: "Login",
         style: {
           width: '21%'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(primereact_column__WEBPACK_IMPORTED_MODULE_2__["Column"], {
+        className: "overflow-text",
         field: "password",
         header: "Password",
         style: {

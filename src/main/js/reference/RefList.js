@@ -121,11 +121,11 @@ export default class RefList extends Component {
                            contextMenuSelection={(e) => this.state.selectedRef}
                            onContextMenuSelectionChange={e => this.setState({selectedRef: e.value})}
                            onContextMenu={e => this.cm.show(e.originalEvent)}>
-                    <Column field="id" header="Reference Id" style={{width: '8%'}}/>
-                    <Column field="fullRef" header="Full Reference" style={{width: '60%'}}/>
-                    <Column field="reducedRef" header="Reduced Reference" style={{width: '14%'}}/>
-                    <Column field="requestsNumb" header="Requests Number" style={{width: '10%'}}/>
-                    <Column field="userId" header="User Id" style={{width: '8%'}}/>
+                    <Column className='overflow-text' field="id" header="Reference Id" style={{width: '8%'}}/>
+                    <Column className='overflow-text' field="fullRef" header="Full Reference" style={{width: '60%'}}/>
+                    <Column className='overflow-text' field="reducedRef" header="Reduced Reference" style={{width: '14%'}}/>
+                    <Column className='overflow-text' field="requestsNumb" header="Requests Number" style={{width: '10%'}}/>
+                    <Column className='overflow-text' field="userId" header="User Id" style={{width: '8%'}}/>
                 </DataTable>
                 <RefDialog isDialogDisplay={this.state.isDialogDisplay}
                             onChangeFinish={this.handleRefFromDialog}

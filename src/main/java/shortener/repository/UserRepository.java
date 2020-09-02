@@ -11,21 +11,18 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
-    @PreAuthorize("authentication?.name != null")
-    Iterable<User> findAll();
-
     @Override
-    @PreAuthorize("@userRepository.findById(#userId).get()?.login == authentication?.name")
     Optional<User> findById(@Param("userId") Long userId);
 
     Optional<User> findByLogin(@Param("login") String login);
 
-    Optional<User> findByLoginAndPassword(@Param("login") String login, @Param("password") String password);
-
     @Override
     User save(@Param("user") User user);
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    Iterable<User> findAll();
+
     @Override
-    @PreAuthorize("@userRepository.findById(#userId)?.login != authentication?.name and hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@userRepository.findById(#userId)?.getLogin() != authentication?.getName() and hasRole('ROLE_ADMIN')")
     void deleteById(@Param("userId") Long userId);
 }

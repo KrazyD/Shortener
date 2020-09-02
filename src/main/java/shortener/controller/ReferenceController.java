@@ -27,6 +27,8 @@ public class ReferenceController {
 
     private static final Logger logger = LogManager.getLogger(ReferenceController.class);
 
+    private final Pattern pattern = Pattern.compile("^(?:http(s)?:\\/\\/)[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#\\[\\]\\@!\\$\\&\\'\\(\\)\\*\\+,;=.]+$");
+
     @Autowired
     private IReferenceService referenceService;
 
@@ -59,9 +61,7 @@ public class ReferenceController {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"UserId can not be 0!\" }");
         }
 
-        Pattern pattern = Pattern.compile("^(?:http(s)?:\\/\\/)[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#\\[\\]\\@!\\$\\&\\'\\(\\)\\*\\+,;=.]+$");
         Matcher matcher = pattern.matcher(refForm.getFullRef());
-
         if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Full reference not valid!\" }");
         }
@@ -124,6 +124,11 @@ public class ReferenceController {
 
         if (refForm.getRefId() == 0 ) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
+        }
+
+        Matcher matcher = pattern.matcher(refForm.getFullRef());
+        if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Full reference not valid!\" }");
         }
 
         Reference ref = (Reference) handleErrors((service, id) -> service.findById((Long) id), referenceService, refForm.getRefId());

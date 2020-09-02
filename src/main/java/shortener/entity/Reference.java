@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,12 +26,12 @@ public class Reference implements BaseEntity, Serializable {
     }
 
     @Id
-//    @Min(value = 0, message = "Field 'refId' can`t be empty!")
     @Column(name = "\"id\"")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank(message = "Field 'fullRef' can`t be empty!")
+    @Size(max = 500, message = "Field 'fullRef' max length is 500!")
     @Column(name = "\"fullRef\"")
     private String fullRef;
 
@@ -66,7 +67,7 @@ public class Reference implements BaseEntity, Serializable {
         this.fullRef = fullRef;
     }
 
-    public String getreducedRef() {
+    public String getReducedRef() {
         return reducedRef;
     }
 

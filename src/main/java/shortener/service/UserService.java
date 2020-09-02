@@ -1,7 +1,6 @@
 package shortener.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shortener.entity.BaseEntity;
@@ -38,11 +37,6 @@ public class UserService implements IUserService {
     @Transactional
     public User save(BaseEntity user) {
          return userRepository.save((User) user);
-    }
-
-    @Override
-    public User getLoggedInUser(String login, String password) {
-        return userRepository.findByLoginAndPassword(login, password).orElse(new User());
     }
 
     @Override

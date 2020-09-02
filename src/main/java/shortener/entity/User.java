@@ -3,11 +3,10 @@ package shortener.entity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.annotations.Type;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -28,7 +27,6 @@ public class User implements BaseEntity, Serializable {
     }
 
     @Id
-//    @Min(value = 1, message = "Field 'userId' can`t be empty!")
     @Column(name = "\"id\"", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -38,10 +36,12 @@ public class User implements BaseEntity, Serializable {
     private String password;
 
     @NotBlank(message = "Field 'login' can`t be empty!")
+    @Size(max = 50, message = "Field 'login' max length is 50!")
     @Column(name = "login", unique = true, nullable = false)
     private String login;
 
     @NotBlank(message = "Field 'username' can`t be empty!")
+    @Size(max = 50, message = "Field 'username' max length is 50!")
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
