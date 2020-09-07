@@ -44,8 +44,6 @@ export default class UserWebService {
 
     static getError(err) {
         let error = {};
-        console.log('UserWebService.getError err=');
-        console.log(err);
         if (err.hasOwnProperty('entity') && err.entity.hasOwnProperty('status')) {
             error = {status: err.entity.status, message: err.entity.data}
         } else {
