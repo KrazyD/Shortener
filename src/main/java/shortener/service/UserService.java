@@ -33,6 +33,10 @@ public class UserService implements IUserService {
         return userRepository.findById(id).orElse(new User());
     }
 
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login).orElse(new User());
+    }
+
     @Override
     @Transactional
     public User save(BaseEntity user) {

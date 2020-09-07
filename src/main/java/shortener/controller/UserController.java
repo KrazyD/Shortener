@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import shortener.entity.BaseEntity;
 import shortener.entity.User;
 import shortener.service.IUserService;
+import shortener.service.UserService;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class UserController {
         if (id == -1) {
             return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  userService.findAll() +" }");
         } else {
-            User foundUser = (User) handleErrors((service, user) -> service.findById(id), userService, id);
+            User foundUser = (User) handleErrors((service, userId) -> service.findById((Long) userId), userService, id);
             if (foundUser != null) {
                 return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  foundUser +" }");
             } else {
@@ -78,7 +79,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Required parameter userId!\" }");
         }
 
-        User foundUser = (User) handleErrors((service, user) -> service.findById(id), userService, id);
+        User foundUser = (User) handleErrors((service, userId) -> service.findById((Long) userId), userService, id);
         if (foundUser == null || foundUser.getId() == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"User not found!\" }");
         }
@@ -86,12 +87,20 @@ public class UserController {
         try {
             userService.delete(id);
         } catch (Exception ex) {
-            logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
+            String error;
+            if (ex.getCause() == null) {
+                error = ex.getMessage();
+            } else if(ex.getCause().getCause() == null) {
+                error = ex.getCause().getMessage();
+            } else {
+                error = ex.getCause().getCause().getMessage();
+            }
+            logger.error("!!!Error while handle request!!!\n" + error);
             isError = true;
         }
 
         if (isError) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"message\": \"Bad request!\" }");
         } else {
             return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\": \"User successfully removed!\" }");
         }
@@ -110,7 +119,10 @@ public class UserController {
                     .map((auth -> "\"" + auth + "\""))
                     .collect(Collectors.joining(","));
 
-            return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\": {" + "\"username\":\"" +
+            User foundUser = userService.findByLogin(username);
+
+            return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\": {" + "\"id\":\"" +
+                    foundUser.getId() + "\",\"username\":\"" +
                     username + "\",\"roles\": [" + roles + "] } }");
         } else {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"User is not authenticated!\" }");

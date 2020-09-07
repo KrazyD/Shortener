@@ -5,11 +5,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import shortener.entity.*;
 import shortener.service.IReferenceService;
+import shortener.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -31,6 +35,9 @@ public class ReferenceController {
 
     @Autowired
     private IReferenceService referenceService;
+
+    @Autowired
+    private IUserService userService;
 
     @GetMapping(value = "/smal.link/*")
     public String useShortRef(HttpServletRequest request) {
@@ -59,16 +66,19 @@ public class ReferenceController {
     public ResponseEntity<String> createReferences(@Valid @RequestBody ReferenceForm refForm, Errors errors) {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getErrorMessage(errors) + " }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": " + getErrorMessage(errors) + " }");
         }
 
         if (refForm.getUserId() == 0) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"UserId can not be 0!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": \"UserId can not be 0!\" }");
         }
 
         Matcher matcher = pattern.matcher(refForm.getFullRef());
         if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Full reference not valid!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": \"Full reference not valid!\" }");
         }
 
         String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
@@ -79,42 +89,42 @@ public class ReferenceController {
         if (newRef != null) {
             return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + newRef + " }");
         } else {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Reference is not created!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": \"Reference is not created!\" }");
         }
     }
 
     @ResponseBody
     @GetMapping(value = "/ref")
-    public ResponseEntity<String> getReferences(@RequestParam(defaultValue = "-1") Long userId,
-                                                @RequestParam(defaultValue = "-1") Long id,
-                                                @RequestParam(defaultValue = "") String reducedRef) {
+    public ResponseEntity<String> getReferences(@RequestParam(defaultValue = "-1") Long userId) {
         try {
-            if (id != -1) {
-                Reference foundRef = (Reference) referenceService.findById(id);
-                if (foundRef.getId() != 0) {
-                    return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + foundRef + " }");
-                } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
-                }
-            } if (userId != -1) {
+            if (userId != -1) {
                 List<Reference> foundRefs = referenceService.findByUserId(userId);
                 if (foundRefs != null) {
                     return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + foundRefs + " }");
                 } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"References not found!\" }");
-                }
-            } else if(!reducedRef.isEmpty()) {
-                Reference foundRef = referenceService.findByReducedRef(reducedRef);
-                if (foundRef.getId() != 0) {
-                    return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + foundRef.getfullRef() + " }");
-                } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", " +
+                            "\"data\": \"References not found!\" }");
                 }
             } else {
-                return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findAll() + " }");
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                if (auth.isAuthenticated() && auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                    return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findAll() + " }");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", " +
+                            "\"data\": \"References not found!\" }");
+                }
             }
         } catch (Exception ex) {
-            logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
+            String error;
+            if (ex.getCause() == null) {
+                error = ex.getMessage();
+            } else if(ex.getCause().getCause() == null) {
+                error = ex.getCause().getMessage();
+            } else {
+                error = ex.getCause().getCause().getMessage();
+            }
+            logger.error("!!!Error while handle request!!!\n" + error);
         }
         return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
     }
@@ -127,18 +137,20 @@ public class ReferenceController {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\":" + getErrorMessage(errors) + " }");
         }
 
-        if (refForm.getRefId() == 0 ) {
+        if (refForm.getRefId() == 0) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
         }
 
         Matcher matcher = pattern.matcher(refForm.getFullRef());
         if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Full reference not valid!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": \"Full reference not valid!\" }");
         }
 
         Reference ref = (Reference) handleErrors((service, id) -> service.findById((Long) id), referenceService, refForm.getRefId());
         if (ref == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", " +
+                    "\"data\": \"Reference not found!\" }");
         }
 
         String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
@@ -150,36 +162,66 @@ public class ReferenceController {
         if (savedRef != null) {
             return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + savedRef + " }");
         } else {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to update reference!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": \"Failure to update reference!\" }");
         }
     }
 
     @ResponseBody
     @DeleteMapping(value = "/ref")
     public ResponseEntity<String> removeReferences(@RequestParam(defaultValue = "") String reducedRef) {
-        boolean isError = false;
 
         if (reducedRef.isEmpty()) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Required parameter reduced reference!\" }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                    "\"data\": \"Required parameter reduced reference!\" }");
         }
 
-        Reference ref = (Reference) handleErrors((service, redRef) -> ((IReferenceService)service).findByReducedRef((String) redRef),
+        Reference ref = (Reference) handleErrors((service, redRef) -> ((IReferenceService) service).findByReducedRef((String) redRef),
                 referenceService, reducedRef);
         if (ref.getId() == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\", \"data\": \"Reference not found!\" }");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{ \"status\": \"Not found\"," +
+                    " \"data\": \"Reference not found!\" }");
         }
 
-        try {
-            referenceService.delete(ref.getId());
-        } catch (Exception ex) {
-            logger.error("!!!Error while handle request!!!\n" + ex.getCause().getCause().getMessage());
-            isError = true;
-        }
 
-        if (isError) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
-        } else {
+        if (isCurrentUserOwner(ref.getUserId()) || isCurrentUserAdmin()) {
+            try {
+                referenceService.delete(ref.getId());
+            } catch (Exception ex) {
+                String error;
+                if (ex.getCause() == null) {
+                    error = ex.getMessage();
+                } else if(ex.getCause().getCause() == null) {
+                    error = ex.getCause().getMessage();
+                } else {
+                    error = ex.getCause().getCause().getMessage();
+                }
+                logger.error("!!!Error while handle request!!!\n" + error);
+                return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Bad request!\" }");
+            }
+
             return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": \"Reference successfully removed!\" }");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{ \"status\": \"Unauthorized\", " +
+                    "\"data\": \"Authorization required!\" }");
         }
+    }
+
+    private boolean isCurrentUserAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
+    private boolean isCurrentUserOwner(Long userId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!auth.isAuthenticated()) {
+            return false;
+        }
+
+        User foundUser = (User) handleErrors((service, id) -> service.findById((Long) id), userService, userId);
+
+        return Objects.equals(auth.getName(), foundUser.getLogin());
     }
 }

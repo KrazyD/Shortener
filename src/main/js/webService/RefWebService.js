@@ -2,6 +2,14 @@ import client from '../webService/client';
 
 export default class RefWebService {
 
+    static getUserRefs(userId) {
+        return client({method: 'GET', path: '/ref?userId=' + userId}).then(response => {
+            return {status: response.entity.status, data: response.entity.data.sort((a, b) => a.id - b.id)};
+        }, err => {
+            throw RefWebService.getError(err);
+        });
+    }
+
     static getRefs() {
         return client({method: 'GET', path: '/ref'}).then(response => {
             return {status: response.entity.status, data: response.entity.data.sort((a, b) => a.id - b.id)};

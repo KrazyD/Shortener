@@ -14,6 +14,6 @@ public interface ReferenceRepository extends CrudRepository<Reference, Long> {
 
     Optional<Reference> findByReducedRef(String reducedRef);
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @userRepository.findById(#userId).get()?.getLogin() == authentication?.getName()")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || @userRepository.findById(#userId).get()?.getLogin() == authentication?.getName()")
     List<Reference> findByUserId(@Param("userId") Long userId);
 }

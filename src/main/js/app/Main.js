@@ -28,8 +28,6 @@ export default class Main extends Component {
 
     render() {
 
-        // TODO Customize the 403 https://www.baeldung.com/spring-security-custom-access-denied-page
-
         return (
             <div>
                 <Header {...this.props} />

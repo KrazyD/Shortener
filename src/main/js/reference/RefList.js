@@ -20,8 +20,10 @@ export default class RefList extends Component {
         let currentUser = this.props?.location?.state?.currentUser;
         if (currentUser) {
             this.userId = currentUser.hasOwnProperty('id') ? currentUser.id : 0;
+            this.isCurUserAdmin = currentUser.roles?.includes('ROLE_ADMIN');
         } else {
             this.userId = 0;
+            this.isCurUserAdmin = false;
         }
 
         this.menu = [
@@ -36,11 +38,20 @@ export default class RefList extends Component {
     }
 
     componentDidMount() {
-        RefWebService.getRefs().then(response => {
-            this.setState({refs: response.data});
-        }, error => {
-            this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
-        });
+        if (this.isCurUserAdmin) {
+            RefWebService.getRefs().then(response => {
+                this.setState({refs: response.data});
+            }, error => {
+                this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
+            });
+        } else {
+            RefWebService.getUserRefs(this.userId).then(response => {
+                this.setState({refs: response.data});
+            }, error => {
+                this.props.getGrowl().show({severity: 'error', summary: error.status, detail: error.message});
+            });
+        }
+
     }
 
     onRowAdd() {

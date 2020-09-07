@@ -23,6 +23,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Iterable<User> findAll();
 
     @Override
-    @PreAuthorize("@userRepository.findById(#userId)?.getLogin() != authentication?.getName() and hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@userRepository.findById(#userId).get().getLogin() != authentication.getName() and hasRole('ROLE_ADMIN')")
     void deleteById(@Param("userId") Long userId);
 }

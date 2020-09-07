@@ -20,7 +20,8 @@ public class LoggingRequestsInterceptor extends HandlerInterceptorAdapter {
         requestWrapper.getParameterMap();
         String requestBody = new String(requestWrapper.getContentAsByteArray());
 
-        logger.info(requestWrapper.getMethod() + " '" + requestWrapper.getRequestURI() + "' Req.body= " + requestBody);
+        logger.info("method=" + requestWrapper.getMethod() + " path='" +
+                requestWrapper.getRequestURI() + "' request body= " + requestBody);
 
         return true;
     }

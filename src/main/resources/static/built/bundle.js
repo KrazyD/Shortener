@@ -53242,7 +53242,6 @@ var Main = /*#__PURE__*/function (_Component) {
           _this$props2,
           _this$props2$location;
 
-      // TODO Customize the 403 https://www.baeldung.com/spring-security-custom-access-denied-page
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_4__["default"], this.props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         path: "/main/usersList",
         render: function render(props) {
@@ -54015,9 +54014,13 @@ var RefList = /*#__PURE__*/function (_Component) {
     var currentUser = (_this$props = _this.props) === null || _this$props === void 0 ? void 0 : (_this$props$location = _this$props.location) === null || _this$props$location === void 0 ? void 0 : (_this$props$location$ = _this$props$location.state) === null || _this$props$location$ === void 0 ? void 0 : _this$props$location$.currentUser;
 
     if (currentUser) {
+      var _currentUser$roles;
+
       _this.userId = currentUser.hasOwnProperty('id') ? currentUser.id : 0;
+      _this.isCurUserAdmin = (_currentUser$roles = currentUser.roles) === null || _currentUser$roles === void 0 ? void 0 : _currentUser$roles.includes('ROLE_ADMIN');
     } else {
       _this.userId = 0;
+      _this.isCurUserAdmin = false;
     }
 
     _this.menu = [{
@@ -54050,17 +54053,31 @@ var RefList = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      _webService_RefWebService__WEBPACK_IMPORTED_MODULE_5__["default"].getRefs().then(function (response) {
-        _this2.setState({
-          refs: response.data
+      if (this.isCurUserAdmin) {
+        _webService_RefWebService__WEBPACK_IMPORTED_MODULE_5__["default"].getRefs().then(function (response) {
+          _this2.setState({
+            refs: response.data
+          });
+        }, function (error) {
+          _this2.props.getGrowl().show({
+            severity: 'error',
+            summary: error.status,
+            detail: error.message
+          });
         });
-      }, function (error) {
-        _this2.props.getGrowl().show({
-          severity: 'error',
-          summary: error.status,
-          detail: error.message
+      } else {
+        _webService_RefWebService__WEBPACK_IMPORTED_MODULE_5__["default"].getUserRefs(this.userId).then(function (response) {
+          _this2.setState({
+            refs: response.data
+          });
+        }, function (error) {
+          _this2.props.getGrowl().show({
+            severity: 'error',
+            summary: error.status,
+            detail: error.message
+          });
         });
-      });
+      }
     }
   }, {
     key: "onRowAdd",
@@ -54758,6 +54775,23 @@ var RefWebService = /*#__PURE__*/function () {
   }
 
   _createClass(RefWebService, null, [{
+    key: "getUserRefs",
+    value: function getUserRefs(userId) {
+      return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
+        method: 'GET',
+        path: '/ref?userId=' + userId
+      }).then(function (response) {
+        return {
+          status: response.entity.status,
+          data: response.entity.data.sort(function (a, b) {
+            return a.id - b.id;
+          })
+        };
+      }, function (err) {
+        throw RefWebService.getError(err);
+      });
+    }
+  }, {
     key: "getRefs",
     value: function getRefs() {
       return _webService_client__WEBPACK_IMPORTED_MODULE_0___default()({
@@ -54944,6 +54978,8 @@ var UserWebService = /*#__PURE__*/function () {
     key: "getError",
     value: function getError(err) {
       var error = {};
+      console.log('UserWebService.getError err=');
+      console.log(err);
 
       if (err.hasOwnProperty('entity') && err.entity.hasOwnProperty('status')) {
         error = {
