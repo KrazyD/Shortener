@@ -39,7 +39,7 @@ public class ReferenceController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping(value = "/smal.link/*")
+    @GetMapping(value = "/small.link/*")
     public String useShortRef(HttpServletRequest request) {
 
         if (request.getRequestURI().length() <= 1) {
@@ -76,12 +76,12 @@ public class ReferenceController {
         }
 
         Matcher matcher = pattern.matcher(refForm.getFullRef());
-        if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
+        if (!matcher.matches() || refForm.getFullRef().contains("small.link")) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
                     "\"data\": \"Full reference not valid!\" }");
         }
 
-        String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
+        String reducedRef = "small.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
         Reference ref = new Reference(refForm.getFullRef(), reducedRef, 0, refForm.getUserId());
 
         Reference newRef = (Reference) handleErrors((service, refer) -> service.save((BaseEntity) refer), referenceService, ref);
@@ -142,7 +142,7 @@ public class ReferenceController {
         }
 
         Matcher matcher = pattern.matcher(refForm.getFullRef());
-        if (!matcher.matches() || refForm.getFullRef().contains("smal.link")) {
+        if (!matcher.matches() || refForm.getFullRef().contains("small.link")) {
             return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
                     "\"data\": \"Full reference not valid!\" }");
         }
@@ -153,7 +153,7 @@ public class ReferenceController {
                     "\"data\": \"Reference not found!\" }");
         }
 
-        String reducedRef = "smal.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
+        String reducedRef = "small.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
         ref.setfullRef(refForm.getFullRef());
         ref.setReducedRef(reducedRef);
 

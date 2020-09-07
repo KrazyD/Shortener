@@ -54978,8 +54978,6 @@ var UserWebService = /*#__PURE__*/function () {
     key: "getError",
     value: function getError(err) {
       var error = {};
-      console.log('UserWebService.getError err=');
-      console.log(err);
 
       if (err.hasOwnProperty('entity') && err.entity.hasOwnProperty('status')) {
         error = {
