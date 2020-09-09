@@ -38,7 +38,7 @@ public class RegistrationController {
     private PasswordEncoder encoder;
 
     @ResponseBody
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/register", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationForm form, Errors errors) {
 
         if (errors.hasErrors()) {

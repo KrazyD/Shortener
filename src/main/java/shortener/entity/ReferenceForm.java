@@ -1,5 +1,8 @@
 package shortener.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -33,5 +36,16 @@ public class ReferenceForm {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error parse ReferenceFrom to JSON!");
+            e.printStackTrace();
+            return "{}";
+        }
     }
 }

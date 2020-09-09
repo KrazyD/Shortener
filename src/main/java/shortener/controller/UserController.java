@@ -30,7 +30,7 @@ public class UserController {
     private IUserService userService;
 
     @ResponseBody
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/user", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> getUser(@RequestParam(defaultValue = "-1") Long id) {
         if (id == -1) {
             return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " +  userService.findAll() +" }");
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @PutMapping(value = "/user")
+    @PutMapping(value = "/user", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> modifyUser(@Valid @RequestBody User user, Errors errors) {
 
         if (errors.hasErrors()) {
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @DeleteMapping(value = "/user")
+    @DeleteMapping(value = "/user", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> removeUser(@RequestParam(defaultValue = "-1") Long id) {
         boolean isError = false;
 
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/login", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> getCurrentUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

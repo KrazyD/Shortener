@@ -16,6 +16,7 @@ import shortener.service.IReferenceService;
 import shortener.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.util.List;
@@ -40,18 +41,18 @@ public class ReferenceController {
     private IUserService userService;
 
     @GetMapping(value = "/small.link/*")
-    public String useShortRef(HttpServletRequest request) {
+    public String useShortRef(HttpServletRequest request, HttpServletResponse response) {
 
         if (request.getRequestURI().length() <= 1) {
-            return "redirect:/error?Error_processing_reference";
+            return "redirect:/error?Error_processing_reference.";
         }
 
         Reference ref = referenceService.findByReducedRef(request.getRequestURI().substring(1));
 
-        if (ref != null && ref.getfullRef() != null && ref.getfullRef().length() > 7) {
-            String fullRef = ref.getfullRef();
+        if (ref != null && ref.getFullRef() != null && ref.getFullRef().length() > 7) {
+            String fullRef = ref.getFullRef();
 
-            ref.setrequestsNumb(ref.getrequestsNumb() + 1);
+            ref.setRequestsNumb(ref.getRequestsNumb() + 1);
 
             referenceService.save(ref);
 
@@ -62,7 +63,7 @@ public class ReferenceController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/ref")
+    @PostMapping(value = "/ref", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> createReferences(@Valid @RequestBody ReferenceForm refForm, Errors errors) {
 
         if (errors.hasErrors()) {
@@ -95,7 +96,7 @@ public class ReferenceController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/ref")
+    @GetMapping(value = "/ref", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> getReferences(@RequestParam(defaultValue = "-1") Long userId) {
         try {
             if (userId != -1) {
@@ -108,6 +109,7 @@ public class ReferenceController {
                 }
             } else {
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                logger.info("!!!!!!!!!!!!!!!!!! auth=" + auth);
                 if (auth.isAuthenticated() && auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
                     return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + referenceService.findAll() + " }");
                 } else {
@@ -130,7 +132,7 @@ public class ReferenceController {
     }
 
     @ResponseBody
-    @PutMapping(value = "/ref")
+    @PutMapping(value = "/ref", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> updateReferences(@Valid @RequestBody UpdateReferenceForm refForm, Errors errors) {
 
         if (errors.hasErrors()) {
@@ -154,7 +156,7 @@ public class ReferenceController {
         }
 
         String reducedRef = "small.link/" + Objects.toString(Objects.hashCode(refForm.getFullRef()));
-        ref.setfullRef(refForm.getFullRef());
+        ref.setFullRef(refForm.getFullRef());
         ref.setReducedRef(reducedRef);
 
         Reference savedRef = (Reference) handleErrors((service, refer) -> service.save((BaseEntity) refer), referenceService, ref);
@@ -168,7 +170,7 @@ public class ReferenceController {
     }
 
     @ResponseBody
-    @DeleteMapping(value = "/ref")
+    @DeleteMapping(value = "/ref", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> removeReferences(@RequestParam(defaultValue = "") String reducedRef) {
 
         if (reducedRef.isEmpty()) {

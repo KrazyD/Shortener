@@ -59,11 +59,11 @@ public class Reference implements BaseEntity, Serializable {
         this.id = id;
     }
 
-    public String getfullRef() {
+    public String getFullRef() {
         return fullRef;
     }
 
-    public void setfullRef(String fullRef) {
+    public void setFullRef(String fullRef) {
         this.fullRef = fullRef;
     }
 
@@ -75,11 +75,11 @@ public class Reference implements BaseEntity, Serializable {
         this.reducedRef = reducedRef;
     }
 
-    public int getrequestsNumb() {
+    public int getRequestsNumb() {
         return requestsNumb;
     }
 
-    public void setrequestsNumb(int requestsNumb) {
+    public void setRequestsNumb(int requestsNumb) {
         this.requestsNumb = requestsNumb;
     }
 
