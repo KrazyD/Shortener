@@ -1,6 +1,5 @@
 package shortener.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -17,18 +16,16 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import shortener.entity.BaseEntity;
 import shortener.entity.Reference;
-import shortener.entity.ReferenceForm;
+import shortener.entity.User;
 import shortener.service.IReferenceService;
 import shortener.service.IUserService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -51,24 +48,26 @@ public class ReferenceControllerTest {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         ref = new Reference("http://google.com", "small.link/-247021602", 0, 1);
+        ref.setId(1L);
     }
 
     @Test
     public void useShortRef() throws Exception {
-        Mockito.when(referenceService.findByReducedRef("small.link/-247021602")).thenReturn(ref);
+        Mockito.when(referenceService.getFullRef("small.link/-247021602")).thenReturn("http://google.com");
 
-        this.mockMvc.perform(get("/small.link/123456"))
+        this.mockMvc.perform(get("/small.link/-247021602"))
                 .andExpect(status().is(HttpStatus.FOUND.value()))
                 .andExpect(redirectedUrl("http://google.com"));
     }
 
     @Test
     public void createReferences() throws Exception {
-        Mockito.when(referenceService.save(ref)).thenReturn(ref);
+        Reference referenceWithoutId = new Reference("http://google.com", "small.link/-247021602", 0, 1);
+        Mockito.when(referenceService.save(referenceWithoutId)).thenReturn(ref);
 
         this.mockMvc.perform(post("/ref")
                 .content("{ \"fullRef\": \"http://google.com\", \"userId\": 1 }")
-                .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.status").value("Success"))
@@ -90,17 +89,18 @@ public class ReferenceControllerTest {
 
     @Test
     public void getReferences_asAdmin() throws Exception {
-        List<Reference> foundRefs = Collections.singletonList(ref);
-        Mockito.when(referenceService.findAll()).thenReturn(foundRefs.toString());
+        List<BaseEntity> foundRefs = Collections.singletonList(ref);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Authentication authentication = new UsernamePasswordAuthenticationToken("login", "password", authorities);
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
+//        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//        Authentication authentication = new UsernamePasswordAuthenticationToken("login", "password", authorities);
+//        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+//        SecurityContextHolder.setContext(securityContext);
+
+//        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        Mockito.when(referenceService.findAll()).thenReturn(foundRefs);
 
         this.mockMvc.perform(get("/ref")
-                .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.status").value("Success"))
@@ -108,10 +108,35 @@ public class ReferenceControllerTest {
     }
 
     @Test
-    public void updateReferences() {
+    public void updateReferences() throws Exception {
+        Reference referenceWithoutId = new Reference("http://twitter.com", "small.link/123456", 0, 1);
+        Mockito.when(referenceService.findById(1L)).thenReturn(referenceWithoutId);
+
+        referenceWithoutId = new Reference("http://google.com", "small.link/-247021602", 0, 1);
+        Mockito.when(referenceService.save(referenceWithoutId)).thenReturn(ref);
+
+        this.mockMvc.perform(put("/ref")
+                .content("{ \"fullRef\": \"http://google.com\", \"refId\": 1 }")
+                .contentType(MediaType.APPLICATION_JSON))/*.andDo(print())*/
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.status").value("Success"))
+                .andExpect(jsonPath("$.data").value(ref));
+
     }
 
     @Test
-    public void removeReferences() {
+    public void removeReferences() throws Exception {
+        User user = new User("password", "login", "username", new String[] {"ROLE_USER", "ROLE_ADMIN"});
+        Mockito.when(userService.findById(1L)).thenReturn(user);
+
+        Mockito.when(referenceService.deleteReference("small.link/-247021602")).thenReturn(true);
+
+        this.mockMvc.perform(delete("/ref").param("reducedRef", "small.link/-247021602")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.status").value("Success"))
+                .andExpect(jsonPath("$.data").value("Reference successfully removed!"));
     }
 }

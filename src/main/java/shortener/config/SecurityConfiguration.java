@@ -51,5 +51,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler);
     }
-
 }
