@@ -31,7 +31,7 @@ public class UserControllerTest {
     private User user;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         user = new User("password", "login", "username", new String[]{"ROLE_USER"});

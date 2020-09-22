@@ -44,7 +44,7 @@ public class UserServiceTest {
     private Optional<Reference> refWrapper;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         user = new User("password", "login", "username", new String[]{"ROLE_USER"});

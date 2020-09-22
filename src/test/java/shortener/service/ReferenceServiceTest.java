@@ -26,15 +26,14 @@ public class ReferenceServiceTest {
 
     private String reducedRef;
     private Optional<Reference> refWrapper;
-    private Reference ref;
     private String fullRef;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         reducedRef = "small.link/123456789";
         fullRef = "http://google.com";
-        ref = new Reference(fullRef, "small.link/123456789", 1, 1L);
+        Reference ref = new Reference(fullRef, "small.link/123456789", 1, 1L);
         ref.setId(1);
         refWrapper = Optional.of(ref);
     }

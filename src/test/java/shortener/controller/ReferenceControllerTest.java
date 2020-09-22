@@ -37,7 +37,7 @@ public class ReferenceControllerTest {
     private Reference ref;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         ref = new Reference("http://google.com", "small.link/-247021602", 0, 1);

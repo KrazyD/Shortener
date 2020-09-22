@@ -13,8 +13,7 @@ import shortener.entity.RegistrationForm;
 import shortener.entity.User;
 import shortener.service.IUserService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class RegistrationControllerTest {
@@ -29,7 +28,7 @@ public class RegistrationControllerTest {
     private User user;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         user = new User("password", "login", "username", new String[]{"ROLE_USER"});
