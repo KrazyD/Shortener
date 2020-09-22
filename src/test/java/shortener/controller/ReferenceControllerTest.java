@@ -8,12 +8,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import shortener.entity.BaseEntity;
@@ -26,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class ReferenceControllerTest {
@@ -62,8 +55,7 @@ public class ReferenceControllerTest {
 
     @Test
     public void createReferences() throws Exception {
-        Reference referenceWithoutId = new Reference("http://google.com", "small.link/-247021602", 0, 1);
-        Mockito.when(referenceService.save(referenceWithoutId)).thenReturn(ref);
+        Mockito.when(referenceService.createRef(1L, "http://google.com")).thenReturn(ref);
 
         this.mockMvc.perform(post("/ref")
                 .content("{ \"fullRef\": \"http://google.com\", \"userId\": 1 }")
@@ -90,13 +82,6 @@ public class ReferenceControllerTest {
     @Test
     public void getReferences_asAdmin() throws Exception {
         List<BaseEntity> foundRefs = Collections.singletonList(ref);
-
-//        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//        Authentication authentication = new UsernamePasswordAuthenticationToken("login", "password", authorities);
-//        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-//        SecurityContextHolder.setContext(securityContext);
-
-//        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         Mockito.when(referenceService.findAll()).thenReturn(foundRefs);
 
         this.mockMvc.perform(get("/ref")
@@ -109,11 +94,7 @@ public class ReferenceControllerTest {
 
     @Test
     public void updateReferences() throws Exception {
-        Reference referenceWithoutId = new Reference("http://twitter.com", "small.link/123456", 0, 1);
-        Mockito.when(referenceService.findById(1L)).thenReturn(referenceWithoutId);
-
-        referenceWithoutId = new Reference("http://google.com", "small.link/-247021602", 0, 1);
-        Mockito.when(referenceService.save(referenceWithoutId)).thenReturn(ref);
+        Mockito.when(referenceService.updateReference(1L, "http://google.com")).thenReturn(ref);
 
         this.mockMvc.perform(put("/ref")
                 .content("{ \"fullRef\": \"http://google.com\", \"refId\": 1 }")

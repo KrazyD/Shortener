@@ -1,6 +1,8 @@
 package shortener.entity;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class RegistrationForm {
 
@@ -63,5 +65,23 @@ public class RegistrationForm {
                 ", login='" + login + '\'' +
                 ", username='" + username + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RegistrationForm)) return false;
+        RegistrationForm that = (RegistrationForm) o;
+        return password.equals(that.password) &&
+                login.equals(that.login) &&
+                username.equals(that.username) &&
+                Arrays.equals(roles, that.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(password, login, username);
+        result = 31 * result + Arrays.hashCode(roles);
+        return result;
     }
 }

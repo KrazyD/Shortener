@@ -14,6 +14,8 @@ public class ReferenceService implements IReferenceService {
     @Autowired
     ReferenceRepository referenceRepository;
 
+    ReferenceService() {}
+
     @Override
     public String getFullRef(String reducedRef) {
         Optional<Reference> refWrapped = referenceRepository.findByReducedRef(reducedRef);

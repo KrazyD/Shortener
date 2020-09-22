@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 public class ReferenceForm {
 
@@ -47,5 +48,19 @@ public class ReferenceForm {
             e.printStackTrace();
             return "{}";
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReferenceForm)) return false;
+        ReferenceForm form = (ReferenceForm) o;
+        return userId == form.userId &&
+                fullRef.equals(form.fullRef);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullRef, userId);
     }
 }

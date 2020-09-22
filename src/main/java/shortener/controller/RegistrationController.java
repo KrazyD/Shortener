@@ -30,7 +30,8 @@ public class RegistrationController {
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationForm form, Errors errors) {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " + getExceptionMessage(errors) + " }");
+            return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": " +
+                    getExceptionMessage(errors) + " }");
         }
 
         try {
@@ -38,7 +39,8 @@ public class RegistrationController {
             if (registeredUser != null) {
                 return ResponseEntity.ok("{ \"status\": \"Success\", \"data\": " + registeredUser + " }");
             } else {
-                return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"data\": \"Failure to register user!\" }");
+                return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", " +
+                        "\"data\": \"Failure to register user!\" }");
             }
         } catch (Exception ex) {
             String error = getExceptionMessage(ex);

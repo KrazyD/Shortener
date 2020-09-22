@@ -92,9 +92,9 @@ public class UserController {
         try {
             boolean isUserDeleted = userService.deleteUser(id);
             if (isUserDeleted) {
-                return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"message\": \"Bad request!\" }");
-            } else {
                 return ResponseEntity.ok().body("{ \"status\": \"Success\", \"data\": \"User successfully removed!\" }");
+            } else {
+                return ResponseEntity.badRequest().body("{ \"status\": \"Bad request\", \"message\": \"User is not deleted!\" }");
             }
         } catch (AccessDeniedException ex) {
             String error = getExceptionMessage(ex);

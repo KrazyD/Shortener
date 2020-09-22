@@ -74,8 +74,8 @@ public class UserService implements IUserService {
             return null;
         }
 
-        String username = authentication.getName();
-        Optional<User> userWrapper = userRepository.findByLogin(username);
+        String login = authentication.getName();
+        Optional<User> userWrapper = userRepository.findByLogin(login);
         if (userWrapper.isEmpty()) {
             return null;
         }
